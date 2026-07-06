@@ -29,7 +29,6 @@ export default function InvoiceStatusSelect() {
                         <SelectContent>
                             <SelectItem value="pending">در انتظار</SelectItem>
                             <SelectItem value="paid">پرداخت شده</SelectItem>
-                            <SelectItem value="cancelled">لغو شده</SelectItem>
                         </SelectContent>
                     </Select>
                 )}
