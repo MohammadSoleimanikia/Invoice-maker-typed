@@ -15,7 +15,6 @@ import { Alert, AlertDescription } from "@/features/shared/components/ui/alert";
 import { Button } from "@/features/shared/components/ui/button";
 import LoadingSpinner from "@/features/shared/components/ui/loadingSpinner";
 import { useHasActiveSubscription } from "@/features/subscription/hooks/useSubscription";
-import useAuth from "@/store/auth";
 
 export default function Dashboard() {
     const { data: dashboardData, isLoading: statsLoading } =
@@ -26,14 +25,13 @@ export default function Dashboard() {
     const { hasAccess } = useHasActiveSubscription();
 
     const { data: profile, isLoading: profileLoading } = useProfile();
-    const authProfile = useAuth((state) => state.profile);
 
     const isLoading =
         statsLoading || recentLoading || pendingLoading || profileLoading;
 
     if (isLoading) return <LoadingSpinner />;
 
-    const userProfile = profile || authProfile;
+    const userProfile = profile ;
 
     const isProfileComplete = () => {
         if (!userProfile) return false;

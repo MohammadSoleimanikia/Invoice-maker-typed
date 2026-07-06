@@ -2,6 +2,7 @@ import { Instagram, MapPinHouse, PhoneCall } from "lucide-react";
 
 import type { User } from "@/features/auth/types/user.type";
 import type { InvoiceViewModel } from "@/features/invoices/types/invoicePreview.type";
+import { useProfile } from "@/features/profile/hooks/useProfile";
 import {
     Table,
     TableBody,
@@ -15,13 +16,13 @@ import {
 } from "@/features/shared/components/ui/tooltip";
 import { generateBrandingColors } from "@/lib/brandingColors";
 import { buildLogoUrl, phoneFormatter } from "@/lib/utils";
-import useAuth from "@/store/auth";
 type invoiceProps = {
     invoice: InvoiceViewModel;
     user: User | null;
 };
+
 export default function Minimal({ invoice, user }: invoiceProps) {
-    const { profile } = useAuth();
+    const { data: profile } = useProfile();
     // Use passed user prop for public invoices, fallback to authenticated user profile
     const displayUser = user || profile;
     const colors = displayUser
@@ -150,7 +151,9 @@ export default function Minimal({ invoice, user }: invoiceProps) {
                                 <span className="font-semibold pl-2">
                                     مالیات بر ارزش افزوده (۱۰٪):
                                 </span>
-                                <span>{invoice.added_value.toLocaleString()} تومان</span>
+                                <span>
+                                    {invoice.added_value.toLocaleString()} تومان
+                                </span>
                             </p>
                         )}
                         {invoice.discount > 0 && (
@@ -158,7 +161,9 @@ export default function Minimal({ invoice, user }: invoiceProps) {
                                 <span className="font-semibold pl-2">
                                     تخفیف:
                                 </span>
-                                <span>{invoice.discount.toLocaleString()} تومان</span>
+                                <span>
+                                    {invoice.discount.toLocaleString()} تومان
+                                </span>
                             </p>
                         )}
                         <p>

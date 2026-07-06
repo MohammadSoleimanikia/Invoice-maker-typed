@@ -15,13 +15,13 @@ import {
 } from "@/features/shared/components/ui/tooltip";
 import { generateBrandingColors } from "@/lib/brandingColors";
 import { buildLogoUrl, phoneFormatter } from "@/lib/utils";
-import useAuth from "@/store/auth";
 type invoiceProps = {
     invoice: InvoiceViewModel;
     user: User | null;
 };
+import { useProfile } from "@/features/profile/hooks/useProfile";
 export default function Classic({ invoice, user }: invoiceProps) {
-    const { profile } = useAuth();
+    const { data: profile } = useProfile();
     // Use passed user for public invoices, fallback to authenticated user profile
     const displayUser = user || profile;
     const colors = displayUser
@@ -156,7 +156,7 @@ export default function Classic({ invoice, user }: invoiceProps) {
                             <span className="font-medium text-muted-foreground">
                                 تخفیف:
                             </span>
-                                {invoice.discount.toLocaleString()} تومان
+                            {invoice.discount.toLocaleString()} تومان
                         </p>
                     )}
 

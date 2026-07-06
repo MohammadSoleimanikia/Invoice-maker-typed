@@ -2,6 +2,7 @@ import { Instagram, MapPinHouse, PhoneCall } from "lucide-react";
 
 import type { User } from "@/features/auth/types/user.type";
 import type { InvoiceViewModel } from "@/features/invoices/types/invoicePreview.type";
+import { useProfile } from "@/features/profile/hooks/useProfile";
 import {
     Table,
     TableBody,
@@ -15,14 +16,13 @@ import {
 } from "@/features/shared/components/ui/tooltip";
 import { generateBrandingColors } from "@/lib/brandingColors";
 import { buildLogoUrl, phoneFormatter } from "@/lib/utils";
-import useAuth from "@/store/auth";
 type invoiceProps = {
     invoice: InvoiceViewModel;
     user: User | null;
 };
 
 export default function Modern({ invoice, user }: invoiceProps) {
-    const { profile } = useAuth();
+    const { data: profile } = useProfile();
 
     // Use passed user for public invoices, fallback to authenticated user profile
     const displayUser = user || profile;

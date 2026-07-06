@@ -3,6 +3,7 @@ import { Moon, Sun, User } from "lucide-react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
+import { useProfile } from "@/features/profile/hooks/useProfile";
 import { useTheme } from "@/features/shared/components/themeProvider";
 import {
     Avatar,
@@ -25,34 +26,30 @@ export function DashboardHeader() {
     const navigate = useNavigate();
     const { theme, setTheme } = useTheme();
     const logOut = useAuth((state) => state.logOut);
-    const profile = useAuth((state) => state.profile);
+    const { data: profile } = useProfile();
 
-    // نام کامل کاربر
-    const fullName = [profile?.first_name, profile?.last_name]
-        .filter(Boolean)
-        .join(" ") || "کاربر عزیز";
-
-    // لوگوی مشتری
-    const logoUrl = profile?.profile?.logo 
-        ? buildLogoUrl(profile.profile.logo) 
-        : null;
+    const fullName =
+        [profile?.first_name, profile?.last_name].filter(Boolean).join(" ") ||
+        "کاربر عزیز";
 
     const handleLogout = () => {
         logOut();
         toast.success("با موفقیت خارج شدید");
         navigate("/login");
     };
-
+    const logoUrl = profile?.profile?.logo
+        ? buildLogoUrl(profile.profile.logo)
+        : null;
     return (
         <header className="flex justify-between items-center px-4 py-2 border-b bg-background">
-           
-
             <div className="flex items-center gap-2">
-                {/* دکمه تغییر تم */}
+                {/* change theme button */}
                 <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                    onClick={() =>
+                        setTheme(theme === "dark" ? "light" : "dark")
+                    }
                     className="rounded-full"
                 >
                     <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -61,15 +58,19 @@ export function DashboardHeader() {
                 </Button>
 
                 {/* Avatar Dropdown */}
-                <DropdownMenu dir="rtl" >
+                <DropdownMenu dir="rtl">
                     <DropdownMenuTrigger asChild>
-                        <Button 
-                            variant="ghost" 
+                        <Button
+                            variant="ghost"
                             className="rounded-full p-0.5 h-auto w-auto border-2 border-border hover:border-primary transition-colors duration-200"
                         >
-                            <Avatar className="h-9 w-9">
+                            <Avatar className="h-9 w-9 bg-white">
                                 {logoUrl ? (
-                                    <AvatarImage src={logoUrl} alt={fullName} className="object-cover" />
+                                    <AvatarImage
+                                        src={logoUrl}
+                                        alt={fullName}
+                                        className="object-contain p-1"
+                                    />
                                 ) : (
                                     <AvatarFallback className="bg-muted text-muted-foreground">
                                         <User className="h-5 w-5" />
@@ -79,11 +80,14 @@ export function DashboardHeader() {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56" align="end">
-                        {/* هدر dropdown با اطلاعات کاربر */}
                         <div className="flex items-center gap-3 px-3 py-2 border-b">
                             <Avatar className="h-8 w-8">
                                 {logoUrl ? (
-                                    <AvatarImage src={logoUrl} alt={fullName} className="object-cover" />
+                                    <AvatarImage
+                                        src={logoUrl}
+                                        alt={fullName}
+                                        className="object-cover"
+                                    />
                                 ) : (
                                     <AvatarFallback className="bg-muted">
                                         <User className="h-4 w-4" />
@@ -91,33 +95,32 @@ export function DashboardHeader() {
                                 )}
                             </Avatar>
                             <div className="flex flex-col">
-                                <span className="text-sm font-medium">{fullName}</span>
+                                <span className="text-sm font-medium">
+                                    {fullName}
+                                </span>
                                 <span className="text-xs text-muted-foreground">
                                     {profile?.profile?.store_name || "فروشگاه"}
                                 </span>
                             </div>
                         </div>
 
-                        {/* آیتم‌های منو - راست‌چین */}
                         <DropdownMenuGroup className="p-1">
-                            <DropdownMenuItem 
-                                onClick={() => navigate("/profile")} 
+                            <DropdownMenuItem
+                                onClick={() => navigate("/profile")}
                                 className="cursor-pointer text-right flex justify-between"
                             >
                                 <span>پروفایل</span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem 
-                                onClick={() => navigate("/subscription")} 
+                            <DropdownMenuItem
+                                onClick={() => navigate("/subscription")}
                                 className="cursor-pointer text-right flex justify-between"
                             >
                                 <span>اشتراک</span>
                             </DropdownMenuItem>
-                           
                         </DropdownMenuGroup>
-                        
+
                         <DropdownMenuSeparator />
-                        
-                        {/* خروج - راست‌چین با رنگ قرمز */}
+
                         <DropdownMenuItem
                             onClick={handleLogout}
                             className="text-red-600 focus:text-red-600 cursor-pointer text-right flex justify-between"
