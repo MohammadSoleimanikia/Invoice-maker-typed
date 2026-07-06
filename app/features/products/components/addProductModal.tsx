@@ -176,6 +176,7 @@ export default function AddProductModal({
                         <Input
                             id="stock_quantity"
                             type="number"
+                            min={0}
                             step="any"
                             placeholder="مثال: ۱۰۰"
                             className={
@@ -184,8 +185,8 @@ export default function AddProductModal({
                             {...register("stock_quantity", {
                                 required: "موجودی الزامی است",
                                 min: {
-                                    value: 1,
-                                    message: "حداقل موجودی یک عدد میباشد",
+                                    value: 0,
+                                    message: "موجودی نمی‌تواند منفی باشد",
                                 },
                             })}
                         />
@@ -299,7 +300,7 @@ export default function AddProductModal({
                                 control={control}
                                 rules={{
                                     required: "قیمت خرید الزامی است",
-                                    min: { value: 1, message: "حداقل ۱" },
+                                    min: { value: 0, message: "نمیتواند منفی باشد." },
                                 }}
                                 render={({ field, fieldState: { error } }) => (
                                     <>
