@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 
 import { useUser } from "@/features/auth/hooks/useUser";
 import InvoicePreview from "@/features/invoices/components/invoicePreview";
+import SharePublicLinkDialog from "@/features/invoices/components/sharePublicLinkDialog";
 import { TemplateSelector } from "@/features/invoices/components/templateSelector";
 import { useInvoice } from "@/features/invoices/hooks/useInvoice";
 import type { Invoice } from "@/features/invoices/types/invoicePreview.type";
@@ -39,6 +40,7 @@ export default function Invoice() {
                     template={template}
                 />
                 <Button onClick={() => window.print()}>چاپ</Button>
+                <SharePublicLinkDialog invoiceToken={invoice.public_token} />
             </div>
 
             <InvoicePreview user={user} invoice={invoice} template={template} />
