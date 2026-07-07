@@ -23,6 +23,76 @@ type TrendData = {
     total: number;
 };
 
+type JalaliDateParts = {
+    year: number;
+    month: number;
+    day: number;
+};
+
+function parseJalaliDate(value: string): JalaliDateParts {
+    const normalized = value.trim().replaceAll("-", "/");
+    const [year, month, day] = normalized.split("/").map(Number);
+
+    return {
+        year,
+        month,
+        day,
+    };
+}
+
+function formatJalaliDate({ year, month, day }: JalaliDateParts) {
+    return `${year}/${String(month).padStart(2, "0")}/${String(day).padStart(
+        2,
+        "0",
+    )}`;
+}
+
+function getJalaliMonthLength(year: number, month: number) {
+    if (month >= 1 && month <= 6) return 31;
+    if (month >= 7 && month <= 11) return 30;
+
+    return isJalaliLeapYear(year) ? 30 : 29;
+}
+
+function isJalaliLeapYear(year: number) {
+    const mod = year % 33;
+
+    return [1, 5, 9, 13, 17, 22, 26, 30].includes(mod);
+}
+
+function subtractOneJalaliDay(value: string) {
+    const date = parseJalaliDate(value);
+
+    date.day -= 1;
+
+    if (date.day >= 1) {
+        return formatJalaliDate(date);
+    }
+
+    date.month -= 1;
+
+    if (date.month < 1) {
+        date.year -= 1;
+        date.month = 12;
+    }
+
+    date.day = getJalaliMonthLength(date.year, date.month);
+
+    return formatJalaliDate(date);
+}
+
+function getJalaliSortValue(value: string) {
+    const { year, month, day } = parseJalaliDate(value);
+
+    return year * 10000 + month * 100 + day;
+}
+
+function formatJalaliShortLabel(value: string) {
+    const { month, day } = parseJalaliDate(value);
+
+    return `${String(month).padStart(2, "0")}/${String(day).padStart(2, "0")}`;
+}
+
 export function TrendChart({ chartData }: { chartData: TrendData[] }) {
     const hasData = chartData?.length > 0;
     const hasRealData = chartData?.some((d) => d.total > 0);
@@ -47,23 +117,22 @@ export function TrendChart({ chartData }: { chartData: TrendData[] }) {
         );
     }
 
-    let processedData = [...chartData];
-    if (chartData.length === 1) {
-        const firstDate = new Date(chartData[0].date);
-        const startDate = new Date(firstDate);
-        startDate.setDate(startDate.getDate() - 1);
+    let processedData = [...chartData].sort((a, b) => {
+        return getJalaliSortValue(a.date) - getJalaliSortValue(b.date);
+    });
 
+    if (processedData.length === 1) {
         processedData = [
             {
-                date: startDate.toISOString().split("T")[0],
+                date: subtractOneJalaliDay(processedData[0].date),
                 total: 0,
             },
-            ...chartData,
+            ...processedData,
         ];
     }
 
-    // پیدا کردن حداقل و حداکثر برای YAxis
-    const maxValue = Math.max(...processedData.map((d) => d.total)) * 1.2;
+    const maxTotal = Math.max(...processedData.map((d) => d.total));
+    const maxValue = Math.ceil(maxTotal * 1.2);
     const minValue = 0;
 
     return (
@@ -77,27 +146,6 @@ export function TrendChart({ chartData }: { chartData: TrendData[] }) {
             <CardContent>
                 <ResponsiveContainer width="100%" height={260}>
                     <LineChart data={processedData}>
-                        <defs>
-                            <linearGradient
-                                id="trendGradient"
-                                x1="0"
-                                y1="0"
-                                x2="0"
-                                y2="1"
-                            >
-                                <stop
-                                    offset="0%"
-                                    stopColor="#14b8a6"
-                                    stopOpacity={0.4}
-                                />
-                                <stop
-                                    offset="100%"
-                                    stopColor="#14b8a6"
-                                    stopOpacity={0}
-                                />
-                            </linearGradient>
-                        </defs>
-
                         <CartesianGrid
                             strokeDasharray="3 3"
                             vertical={false}
@@ -106,7 +154,9 @@ export function TrendChart({ chartData }: { chartData: TrendData[] }) {
 
                         <XAxis
                             dataKey="date"
-                            tickFormatter={(value) => value.slice(5)}
+                            tickFormatter={(value: string) =>
+                                formatJalaliShortLabel(value)
+                            }
                             tick={{
                                 fontSize: 12,
                                 fill: "rgb(148 163 184)",
@@ -141,7 +191,7 @@ export function TrendChart({ chartData }: { chartData: TrendData[] }) {
                                 color: "rgb(226 232 240)",
                             }}
                             labelFormatter={(label) =>
-                                `تاریخ: ${label.slice(0, 10)}`
+                                `تاریخ: ${String(label)}`
                             }
                             formatter={(value: number) => [
                                 value.toLocaleString("fa-IR"),
@@ -160,7 +210,6 @@ export function TrendChart({ chartData }: { chartData: TrendData[] }) {
                                     : false
                             }
                             activeDot={{ r: 5 }}
-                            fill="url(#trendGradient)"
                         />
                     </LineChart>
                 </ResponsiveContainer>
