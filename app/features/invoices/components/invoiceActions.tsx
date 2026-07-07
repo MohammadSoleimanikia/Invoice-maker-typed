@@ -1,5 +1,5 @@
 // components/invoices/invoiceActions.tsx
-import { Check, Eye, Share2, SquarePen, Trash } from "lucide-react";
+import { Check, Eye, SquarePen, Trash } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "sonner";
@@ -13,15 +13,14 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "../../shared/components/ui/dialog";
-import { Input } from "../../shared/components/ui/input";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from "../../shared/components/ui/tooltip";
+import SharePublicLinkDialog from "./sharePublicLinkDialog";
 
 type InvoiceActionsProps = {
     invoiceId: string;
@@ -34,54 +33,6 @@ type InvoiceActionsProps = {
     isPaying: boolean;
 };
 
-// کامپوننت SharePublicLinkDialog داخل همین فایل
-function SharePublicLinkDialog({ invoiceToken }: { invoiceToken: string }) {
-    const shareLink = `${window.location.origin}/public/${invoiceToken}`;
-
-    const copyToClipboard = async () => {
-        try {
-            await navigator.clipboard.writeText(shareLink);
-            toast.success("لینک فاکتور کپی شد");
-        } catch {
-            toast.error("خطا در کپی لینک");
-        }
-    };
-
-    return (
-        <Dialog>
-            <TooltipProvider>
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <DialogTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                            >
-                                <Share2 className="h-4 w-4" />
-                            </Button>
-                        </DialogTrigger>
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom">
-                        <p>اشتراک لینک فاکتور</p>
-                    </TooltipContent>
-                </Tooltip>
-            </TooltipProvider>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>لینک اشتراک فاکتور</DialogTitle>
-                    <DialogDescription>
-                        لینک زیر را برای مشتری ارسال کنید
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="flex items-center gap-2">
-                    <Input value={shareLink} readOnly className="flex-1" />
-                    <Button onClick={copyToClipboard}>کپی</Button>
-                </div>
-            </DialogContent>
-        </Dialog>
-    );
-}
 
 // کامپوننت ConfirmDialog برای تأیید پرداخت
 function ConfirmPaidDialog({
