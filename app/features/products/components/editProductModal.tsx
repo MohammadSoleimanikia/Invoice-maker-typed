@@ -269,15 +269,11 @@ export default function EditProductModal({ product }: EditProductModalProps) {
                                 className="text-sm font-medium"
                             >
                                 قیمت فروش{" "}
-                                <span className="text-red-500">*</span>
                             </Label>
                             <Controller
                                 name="price"
                                 control={control}
-                                rules={{
-                                    required: "قیمت الزامی است",
-                                    min: { value: 0.01, message: "حداقل ۰.۰۱" },
-                                }}
+
                                 render={({ field, fieldState: { error } }) => (
                                     <>
                                         <NumericFormat
@@ -326,15 +322,11 @@ export default function EditProductModal({ product }: EditProductModalProps) {
                                 className="text-sm font-medium"
                             >
                                 قیمت خرید{" "}
-                                <span className="text-red-500">*</span>
+                                
                             </Label>
                             <Controller
                                 name="last_buy_price"
                                 control={control}
-                                rules={{
-                                    required: "قیمت خرید الزامی است",
-                                    min: { value: 0.01, message: "حداقل ۰.۰۱" },
-                                }}
                                 render={({ field, fieldState: { error } }) => (
                                     <>
                                         <NumericFormat

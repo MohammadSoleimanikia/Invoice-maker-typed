@@ -171,7 +171,7 @@ export default function AddProductModal({
                             htmlFor="stock_quantity"
                             className="text-sm font-medium"
                         >
-                            موجودی <span className="text-red-500">*</span>
+                            موجودی 
                         </Label>
                         <Input
                             id="stock_quantity"
@@ -183,7 +183,6 @@ export default function AddProductModal({
                                 errors.stock_quantity ? "border-red-500" : ""
                             }
                             {...register("stock_quantity", {
-                                required: "موجودی الزامی است",
                                 min: {
                                     value: 0,
                                     message: "موجودی نمی‌تواند منفی باشد",
@@ -238,15 +237,11 @@ export default function AddProductModal({
                                 className="text-sm font-medium"
                             >
                                 قیمت فروش{" "}
-                                <span className="text-red-500">*</span>
                             </Label>
                             <Controller
                                 name="price"
                                 control={control}
-                                rules={{
-                                    required: "قیمت الزامی است",
-                                    min: { value: 1, message: "حداقل ۱" },
-                                }}
+                               
                                 render={({ field, fieldState: { error } }) => (
                                     <>
                                         <NumericFormat
@@ -293,13 +288,11 @@ export default function AddProductModal({
                                 className="text-sm font-medium"
                             >
                                 قیمت خرید{" "}
-                                <span className="text-red-500">*</span>
                             </Label>
                             <Controller
                                 name="last_buy_price"
                                 control={control}
                                 rules={{
-                                    required: "قیمت خرید الزامی است",
                                     min: { value: 0, message: "نمیتواند منفی باشد." },
                                 }}
                                 render={({ field, fieldState: { error } }) => (
