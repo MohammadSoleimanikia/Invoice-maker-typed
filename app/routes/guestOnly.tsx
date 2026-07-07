@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router";
 
-import useAuth from "@/store/auth";
+import useAuth from "@/features/auth/store/authStore";
 
 export default function GuestOnly() {
     const token = useAuth((state) => state.token);

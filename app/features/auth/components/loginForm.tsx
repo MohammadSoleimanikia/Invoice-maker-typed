@@ -27,7 +27,8 @@ import {
     phoneFormSchema,
     type PhoneFormType,
 } from "@/schemas/auth.schema";
-import useAuth from "@/store/auth";
+
+import useAuth from "../store/authStore";
 
 const RESEND_COOLDOWN = 120;
 

@@ -1,14 +1,13 @@
 // features/home/components/header.tsx
 import { Link, NavLink } from "react-router";
 
+import useAuth from "@/features/auth/store/authStore";
 import ThemeToggler from "@/features/home/components/themeToggler";
 import { Button } from "@/features/shared/components/ui/button";
-import useAuth from "@/store/auth";
 
 export function Header() {
     const token = useAuth((state) => state.token);
     const isLoggedIn = !!token;
-
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
@@ -40,7 +39,10 @@ export function Header() {
                                 </Button>
                             </Link>
                         )}
-                        <NavLink to={isLoggedIn ? "/dashboard" : "/login"} className="flex-1">
+                        <NavLink
+                            to={isLoggedIn ? "/dashboard" : "/login"}
+                            className="flex-1"
+                        >
                             <Button size="sm" className="w-full">
                                 {isLoggedIn ? "داشبورد" : "ورود/عضویت"}
                             </Button>

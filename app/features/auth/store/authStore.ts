@@ -1,3 +1,4 @@
+// features/auth/store/authStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -8,13 +9,17 @@ const useAuth = create<AuthContextType>()(
     persist(
         (set) => ({
             token: null,
-            logIn: (token: Token) => set({ token }),
+
+            logIn: (token: Token) => {
+                set({ token });
+            },
+
             logOut: () => {
                 set({ token: null });
             },
         }),
         {
-            name: "auth", // Key for localStorage
+            name: "auth",
         },
     ),
 );

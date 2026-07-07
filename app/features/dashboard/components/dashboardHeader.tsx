@@ -3,6 +3,7 @@ import { Moon, Sun, User } from "lucide-react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
+import useAuth from "@/features/auth/store/authStore";
 import { useProfile } from "@/features/profile/hooks/useProfile";
 import { useTheme } from "@/features/shared/components/themeProvider";
 import {
@@ -20,7 +21,6 @@ import {
     DropdownMenuTrigger,
 } from "@/features/shared/components/ui/dropdown-menu";
 import { buildLogoUrl } from "@/lib/utils";
-import useAuth from "@/store/auth";
 
 export function DashboardHeader() {
     const navigate = useNavigate();
