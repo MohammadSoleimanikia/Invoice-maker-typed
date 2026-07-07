@@ -17,7 +17,7 @@ export function useCreateInvoice() {
             });
         },
         onSuccess: (data) => {
-            queryClient.invalidateQueries({queryKey:['invoices']})
+            queryClient.invalidateQueries({queryKey:['invoices',"dashboard","products"]})
             toast.success("فاکتور با موفقیت ساخته شد ");
             navigate(`/invoices/${data.id}`);
 
