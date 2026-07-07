@@ -3,14 +3,14 @@
  * Centralizes business logic to follow DRY principles
  */
 
-import {
-    InvoiceStatus,
-    PaymentMode,
-} from "@/features/invoices/constants/invoice";
 import type {
     DemoInvoiceFormType,
     DemoInvoiceItem,
 } from "@/features/demoInvoice/types/demoInvoice";
+import {
+    InvoiceStatus,
+    PaymentMode,
+} from "@/features/invoices/constants/invoice";
 
 /**
  * Calculate total amount from invoice items

@@ -7,6 +7,7 @@ import Classic from "@/features/invoices/components/templates/classic";
 import Minimal from "@/features/invoices/components/templates/minimal";
 import Modern from "@/features/invoices/components/templates/modern";
 import { buildInvoiceViewModel } from "@/features/invoices/libs/invoiceViewModel";
+import type { PublicInvoice } from "@/features/invoices/types/invoice";
 import type { Invoice } from "@/features/invoices/types/invoicePreview.type";
 import { useTheme } from "@/features/shared/components/themeProvider";
 import { Button } from "@/features/shared/components/ui/button";
@@ -19,7 +20,6 @@ import {
 } from "@/features/shared/components/ui/select";
 import Zoomable from "@/features/shared/components/zoomable";
 import { apiFetch } from "@/features/shared/lib/api";
-import type { PublicInvoice } from "@/features/invoices/types/invoice";
 
 export default function PublicInvoice() {
     const { invoiceToken } = useParams<{ invoiceToken: string }>();
