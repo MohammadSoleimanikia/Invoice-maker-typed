@@ -17,10 +17,11 @@ export function useCreateInvoice() {
             });
         },
         onSuccess: (data) => {
-            queryClient.invalidateQueries({queryKey:['invoices',"dashboard","products"]})
+            queryClient.invalidateQueries({ queryKey: ["invoices"] });
+            queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+            queryClient.invalidateQueries({ queryKey: ["products"] });
             toast.success("فاکتور با موفقیت ساخته شد ");
             navigate(`/invoices/${data.id}`);
-
         },
         onError: (error: any) => {
             toast.error(error?.message || "خطا در ساخت فاکتور");
