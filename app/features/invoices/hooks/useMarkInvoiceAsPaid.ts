@@ -1,17 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/features/shared/lib/api";
 
 export function useMarkInvoiceAsPaid() {
-    const queryClient=useQueryClient();
+    const queryClient = useQueryClient();
     return useMutation({
-        mutationFn:async({id}:{id:string})=>{
-            return await apiFetch(`/user/invoices/${id}/paid/`, { method: 'POST' })
+        mutationFn: async ({ id }: { id: string }) => {
+            return await apiFetch(`/user/invoices/${id}/paid/`, {
+                method: "POST",
+            });
         },
-        onSuccess:(_,{id})=>{
-            queryClient.invalidateQueries({queryKey:['invoices']})
-            queryClient.invalidateQueries({queryKey:['invoice',id]})
-        }
-    })
-
+        onSuccess: (_, { id }) => {
+            queryClient.invalidateQueries({ queryKey: ["invoices"] });
+            queryClient.invalidateQueries({ queryKey: ["invoice", id] });
+        },
+    });
 }

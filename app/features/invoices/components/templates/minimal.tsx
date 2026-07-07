@@ -3,6 +3,7 @@ import { Instagram, MapPinHouse, PhoneCall } from "lucide-react";
 import type { User } from "@/features/auth/types/user.type";
 import type { InvoiceViewModel } from "@/features/invoices/types/invoicePreview.type";
 import { useProfile } from "@/features/profile/hooks/useProfile";
+import { generateBrandingColors } from "@/features/profile/lib/brandingColors";
 import {
     Table,
     TableBody,
@@ -14,8 +15,7 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/features/shared/components/ui/tooltip";
-import { generateBrandingColors } from "@/lib/brandingColors";
-import { buildLogoUrl, phoneFormatter } from "@/lib/utils";
+import { buildLogoUrl, phoneFormatter } from "@/features/shared/lib/utils";
 type invoiceProps = {
     invoice: InvoiceViewModel;
     user: User | null;

@@ -2,7 +2,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/features/shared/lib/api";
 
 export function useCancelPurchaseInvoice() {
     const queryClient = useQueryClient();

@@ -1,7 +1,7 @@
 // app/features/purchase-invoices/hooks/usePurchaseInvoice.ts
 import { useQuery } from "@tanstack/react-query";
 
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/features/shared/lib/api";
 
 import type { PurchaseInvoice } from "../types/purchaseInvoice.types";
 

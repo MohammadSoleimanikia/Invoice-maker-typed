@@ -5,6 +5,15 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 import {
+    calculateInvoiceTotal,
+    generateInvoiceId,
+    getDefaultInvoiceFormValues,
+    isInvoiceFormValid,
+    transformFormItemsToInvoiceItems,
+} from "@/features/demoInvoice/lib/invoiceUtils";
+import { useInvoiceStore } from "@/features/demoInvoice/store/demoInvoice";
+import type { DemoInvoiceFormType } from "@/features/demoInvoice/types/demoInvoice";
+import {
     invoiceStatusOptions,
     paymentModeOptions,
 } from "@/features/invoices/constants/invoice";
@@ -36,15 +45,6 @@ import {
     MESSAGES,
     PLACEHOLDERS,
 } from "@/features/shared/constants/i18n";
-import {
-    calculateInvoiceTotal,
-    generateInvoiceId,
-    getDefaultInvoiceFormValues,
-    isInvoiceFormValid,
-    transformFormItemsToInvoiceItems,
-} from "@/lib/invoiceUtils";
-import { useInvoiceStore } from "@/store/demoInvoice";
-import type { DemoInvoiceFormType } from "@/types/demoInvoice";
 
 function formatDateInputValue(date: Date) {
     const year = date.getFullYear();

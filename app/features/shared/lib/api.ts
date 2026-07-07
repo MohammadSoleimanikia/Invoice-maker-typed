@@ -1,5 +1,4 @@
-
-import { getStoredToken } from "./authStorage";
+import { getStoredToken } from "../../auth/lib/authStorage";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 async function refreshToken() {
@@ -80,8 +79,6 @@ export async function apiFetch<T>(
 ): Promise<T> {
     const method = options.method?.toUpperCase() || "GET";
 
-    
-
     // 🌐 If no cache or not GET, fetch from API
     const token = getStoredToken();
 
@@ -142,20 +139,17 @@ export async function apiFetch<T>(
         };
     }
 
-    
-
     // 🗑️ If POST/PUT/DELETE, invalidate related caches by prefix
     if (method !== "GET") {
         const prefixesToInvalidate = getInvalidationPrefixes(url, method);
         if (prefixesToInvalidate.length > 0) {
             // Invalidate all cache entries that contain these prefixes
-            
-       
+
             try {
                 // Record that a write happened so other tabs/components can decide to refresh
                 localStorage.setItem("lastWriteAt", String(Date.now()));
             } catch (e) {
-                console.log(e)
+                console.log(e);
                 // ignore storage errors
             }
         }

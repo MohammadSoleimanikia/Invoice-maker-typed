@@ -2,11 +2,11 @@ import { useNavigate } from "react-router";
 
 import { buildInvoiceViewModel } from "@/features/invoices/libs/invoiceViewModel";
 import { BUTTON_LABELS, MESSAGES } from "@/features/shared/constants/i18n";
-import { useInvoiceStore } from "@/store/demoInvoice";
+import { useInvoiceStore } from "@/features/demoInvoice/store/demoInvoice";
 
-import Minimal from "../../features/invoices/components/templates/minimal";
-import { Button } from "../../features/shared/components/ui/button";
-import { FormActions } from "../../features/shared/components/ui/form-fields";
+import Minimal from "../../invoices/components/templates/minimal";
+import { Button } from "../../shared/components/ui/button";
+import { FormActions } from "../../shared/components/ui/form-fields";
 
 /**
  * Demo invoice preview component

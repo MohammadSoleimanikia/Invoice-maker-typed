@@ -4,7 +4,7 @@ import type {
     PaginatedProductList,
     Product,
 } from "@/features/products/types/product";
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/features/shared/lib/api";
 
 type UseProductParams = {
     search?: string;

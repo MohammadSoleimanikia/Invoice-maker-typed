@@ -20,7 +20,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/features/shared/components/ui/dropdown-menu";
-import { buildLogoUrl } from "@/lib/utils";
+import { buildLogoUrl } from "@/features/shared/lib/utils";
 
 export function DashboardHeader() {
     const navigate = useNavigate();

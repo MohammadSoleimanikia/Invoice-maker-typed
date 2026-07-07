@@ -21,8 +21,8 @@ import {
     CardTitle,
 } from "@/features/shared/components/ui/card";
 import { Separator } from "@/features/shared/components/ui/separator";
-import { formatPhoneNumber } from "@/features/shared/libs/phoneUtils";
-import { buildLogoUrl } from "@/lib/utils";
+import { formatPhoneNumber } from "@/features/shared/lib/phoneUtils";
+import { buildLogoUrl } from "@/features/shared/lib/utils";
 
 import LoadingSpinner from "../../shared/components/ui/loadingSpinner";
 import EditProfileModal from "./editProfileModal";
@@ -206,9 +206,7 @@ export default function ProfileCard() {
                 </CardContent>
 
                 <CardFooter className="bg-muted/30 text-sm text-muted-foreground">
-                    <span>{" عضویت از:  "}</span>
-                    {" "}
-                    {profile.date_joined}
+                    <span>{" عضویت از:  "}</span> {profile.date_joined}
                 </CardFooter>
             </Card>
 

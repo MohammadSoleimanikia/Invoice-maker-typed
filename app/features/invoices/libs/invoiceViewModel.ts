@@ -6,9 +6,9 @@ import {
     paymentModeFa,
 } from "@/features/invoices/constants/invoice";
 import type { Invoice } from "@/features/invoices/types/invoicePreview.type";
-import { formatPersianDateTime } from "@/lib/dateFormatter";
+import { formatPersianDateTime } from "@/features/shared/lib/dateFormatter";
 
-import { phoneFormatter } from "../../../lib/utils";
+import { phoneFormatter } from "../../shared/lib/utils";
 
 type InvoiceViewModelProps = {
     invoice: Invoice;

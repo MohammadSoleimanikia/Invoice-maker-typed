@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/features/shared/lib/api";
 export function useDeleteCustomer() {
     const queryClient = useQueryClient();
     return useMutation({
@@ -14,8 +14,8 @@ export function useDeleteCustomer() {
             queryClient.invalidateQueries({ queryKey: ["customers"] });
             toast.success("مشتری با موفقیت  حذف شد !");
         },
-        onError:(error:any)=>{
+        onError: (error: any) => {
             toast.error(error?.message || "خطا در حذف مشتری");
-        }
+        },
     });
 }

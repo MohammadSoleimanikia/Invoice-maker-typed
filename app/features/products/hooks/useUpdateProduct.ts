@@ -1,12 +1,9 @@
-import {
-    useMutation,
-    useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/features/shared/lib/api";
 
-import type { Product,  ProductCreate } from "../types/product";
+import type { Product, ProductCreate } from "../types/product";
 export function useUpdateProduct() {
     const queryClient = useQueryClient();
     return useMutation({
@@ -27,7 +24,6 @@ export function useUpdateProduct() {
                 queryKey: ["products"],
             });
             toast.success("کالا با موفقیت ویرایش شد");
-            
         },
         onError: (error: any) => {
             toast.error(error?.message || "خطا در ویرایش کالا");

@@ -4,6 +4,12 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
+import {
+    otpFormSchema,
+    type OtpFormType,
+    phoneFormSchema,
+    type PhoneFormType,
+} from "@/features/auth/schema/auth.schema";
 import type { Token } from "@/features/auth/types/token";
 import { Button } from "@/features/shared/components/ui/button";
 import { Card, CardContent } from "@/features/shared/components/ui/card";
@@ -19,14 +25,8 @@ import {
     InputOTPSeparator,
     InputOTPSlot,
 } from "@/features/shared/components/ui/input-otp";
-import { apiFetch } from "@/lib/api";
-import { cn } from "@/lib/utils";
-import {
-    otpFormSchema,
-    type OtpFormType,
-    phoneFormSchema,
-    type PhoneFormType,
-} from "@/schemas/auth.schema";
+import { apiFetch } from "@/features/shared/lib/api";
+import { cn } from "@/features/shared/lib/utils";
 
 import useAuth from "../store/authStore";
 

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import type { User, UserUpdate } from "@/features/auth/types/user.type";
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/features/shared/lib/api";
 
 export function useEditProfile(profile: User, onSuccess?: () => void) {
     const queryClient = useQueryClient();
@@ -22,18 +22,34 @@ export function useEditProfile(profile: User, onSuccess?: () => void) {
     });
 
     const { mutateAsync, isPending } = useMutation({
-        mutationFn: async ({ data, logoFile }: { data: UserUpdate; logoFile: File | null }) => {
+        mutationFn: async ({
+            data,
+            logoFile,
+        }: {
+            data: UserUpdate;
+            logoFile: File | null;
+        }) => {
             const formData = new FormData();
-            if (data.first_name !== undefined) formData.append("first_name", data.first_name);
-            if (data.last_name !== undefined) formData.append("last_name", data.last_name);
-            if (data.store_name != null) formData.append("store_name", data.store_name);
-            if (data.store_description != null) formData.append("store_description", data.store_description);
-            if (data.store_address != null) formData.append("store_address", data.store_address);
-            if (data.insta_link != null) formData.append("insta_link", data.insta_link);
-            if (data.hexcolor !== undefined) formData.append("hexcolor", data.hexcolor);
+            if (data.first_name !== undefined)
+                formData.append("first_name", data.first_name);
+            if (data.last_name !== undefined)
+                formData.append("last_name", data.last_name);
+            if (data.store_name != null)
+                formData.append("store_name", data.store_name);
+            if (data.store_description != null)
+                formData.append("store_description", data.store_description);
+            if (data.store_address != null)
+                formData.append("store_address", data.store_address);
+            if (data.insta_link != null)
+                formData.append("insta_link", data.insta_link);
+            if (data.hexcolor !== undefined)
+                formData.append("hexcolor", data.hexcolor);
             if (logoFile !== null) formData.append("logo", logoFile);
 
-            return apiFetch("/account/profile/", { method: "PATCH", body: formData });
+            return apiFetch("/account/profile/", {
+                method: "PATCH",
+                body: formData,
+            });
         },
         onSuccess: () => {
             toast.success("پروفایل با موفقیت ویرایش شد!");
@@ -41,7 +57,8 @@ export function useEditProfile(profile: User, onSuccess?: () => void) {
             onSuccess?.();
         },
         onError: (err: any) => {
-            const message = err?.message ?? "خطایی رخ داد، لطفاً دوباره تلاش کنید";
+            const message =
+                err?.message ?? "خطایی رخ داد، لطفاً دوباره تلاش کنید";
             form.setError("root", { type: "server", message });
         },
     });

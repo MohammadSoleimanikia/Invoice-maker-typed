@@ -1,4 +1,4 @@
-import DemoInvoiceForm from "@/components/demo/demoNewInvoice";
+import DemoInvoiceForm from "@/features/demoInvoice/components/demoNewInvoice";
 import { PAGE_TITLES } from "@/features/shared/constants/i18n";
 
 /**

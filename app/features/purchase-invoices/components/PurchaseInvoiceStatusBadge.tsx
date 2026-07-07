@@ -1,6 +1,6 @@
 // app/features/purchase-invoices/components/PurchaseInvoiceStatusBadge.tsx
 import { Badge } from "@/features/shared/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { cn } from "@/features/shared/lib/utils";
 
 import type { PurchaseInvoiceStatus } from "../types/purchaseInvoice.types";
 

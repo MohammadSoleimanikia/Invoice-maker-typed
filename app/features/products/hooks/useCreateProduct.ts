@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import type { Product, ProductCreate } from "@/features/products/types/product";
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/features/shared/lib/api";
 
 export function useCreateProduct() {
     const queryClient = useQueryClient();

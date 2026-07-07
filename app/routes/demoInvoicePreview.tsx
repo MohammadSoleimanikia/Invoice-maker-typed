@@ -1,4 +1,4 @@
-import DemoInvoicePreview from "@/components/demo/demoPreview";
+import DemoInvoicePreview from "@/features/demoInvoice/components/demoPreview";
 
 export default function DemoInvoicePreviewRoute() {
     return <DemoInvoicePreview />;

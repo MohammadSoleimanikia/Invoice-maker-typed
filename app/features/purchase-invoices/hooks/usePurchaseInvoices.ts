@@ -1,7 +1,7 @@
 // features/purchase-invoices/hooks/usePurchaseInvoices.ts
 import { useQuery } from "@tanstack/react-query";
 
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/features/shared/lib/api";
 
 import type { PaginatedPurchaseInvoiceList } from "../types/purchaseInvoice.types";
 

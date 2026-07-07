@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 
 import type { User } from "@/features/auth/types/user.type";
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/features/shared/lib/api";
 
 export function useProfile() {
-
     return useQuery({
         queryKey: ["profile"],
         queryFn: async () => {

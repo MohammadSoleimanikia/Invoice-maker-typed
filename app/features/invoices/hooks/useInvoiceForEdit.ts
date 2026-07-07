@@ -1,7 +1,7 @@
 // features/invoices/hooks/useInvoiceForEdit.ts
 import { useQuery } from "@tanstack/react-query";
 
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/features/shared/lib/api";
 
 import type { Invoice } from "../types/invoicePreview.type";
 

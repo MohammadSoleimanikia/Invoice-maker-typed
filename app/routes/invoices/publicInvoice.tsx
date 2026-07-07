@@ -18,8 +18,8 @@ import {
     SelectValue,
 } from "@/features/shared/components/ui/select";
 import Zoomable from "@/features/shared/components/zoomable";
-import { apiFetch } from "@/lib/api";
-import type { PublicInvoice } from "@/types/invoice";
+import { apiFetch } from "@/features/shared/lib/api";
+import type { PublicInvoice } from "@/features/invoices/types/invoice";
 
 export default function PublicInvoice() {
     const { invoiceToken } = useParams<{ invoiceToken: string }>();

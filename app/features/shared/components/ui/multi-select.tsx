@@ -28,7 +28,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/features/shared/components/ui/popover";
-import { cn } from "~/lib/utils";
+import { cn } from "@/features/shared/lib/utils";
 
 type MultiSelectContextType = {
     open: boolean;

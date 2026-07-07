@@ -2,18 +2,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/features/shared/lib/api";
 
 type PurchasePlanResponse = {
     detail: string;
 };
 
 export function usePurchasePlan() {
-    const queryClient = useQueryClient(); 
-    
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: async (planId: number) => {
-
             const response = await apiFetch<PurchasePlanResponse>(
                 "/account/purchaseplan/",
                 {
@@ -34,7 +33,8 @@ export function usePurchasePlan() {
         },
         onError: (error: any) => {
             console.error("🔴 Purchase error:", error);
-            const message = error?.detail || error?.message || "خطا در درخواست پرداخت";
+            const message =
+                error?.detail || error?.message || "خطا در درخواست پرداخت";
             toast.error(message);
         },
     });
@@ -48,29 +48,34 @@ type VerifyPaymentResponse = {
 
 export function useVerifyPayment() {
     const queryClient = useQueryClient();
-    
+
     return useMutation({
         mutationFn: async (authority: string) => {
-            
-            const response = await apiFetch<VerifyPaymentResponse>("/account/verifypayment/", {
-                method: "POST",
-                body: JSON.stringify({ authority }),
-            });
-            
+            const response = await apiFetch<VerifyPaymentResponse>(
+                "/account/verifypayment/",
+                {
+                    method: "POST",
+                    body: JSON.stringify({ authority }),
+                },
+            );
+
             return response;
         },
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["subscription"] });
-            
+
             if (data.status === "success") {
-                toast.success(`پرداخت با موفقیت انجام شد! کد رهگیری: ${data.ref_id}`);
+                toast.success(
+                    `پرداخت با موفقیت انجام شد! کد رهگیری: ${data.ref_id}`,
+                );
             } else {
                 toast.error("پرداخت ناموفق بود");
             }
         },
         onError: (error: any) => {
             console.error("🔴 Verify error:", error);
-            const message = error?.detail || error?.message || "خطا در تایید پرداخت";
+            const message =
+                error?.detail || error?.message || "خطا در تایید پرداخت";
             toast.error(message);
         },
     });

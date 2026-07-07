@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import type { CustomerInvoiceList } from "@/features/customers/types/customerReport";
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/features/shared/lib/api";
 
 type UseCustomerInvoicesParams = {
     customerId: string;

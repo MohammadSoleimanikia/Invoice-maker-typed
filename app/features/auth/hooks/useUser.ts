@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { apiFetch } from "@/lib/api";
+import { apiFetch } from "@/features/shared/lib/api";
 
 import type { User } from "../types/user.type";
 type UseUserReturn = {
-    user: User|null;
+    user: User | null;
     isLoading: boolean;
     isError: boolean;
     error: Error | null;
@@ -25,5 +25,4 @@ export function useUser(): UseUserReturn {
         staleTime: 30 * 60 * 1000, //30 min cause user is less prone to change
     });
     return { user: user || null, isLoading, isError: !!error, error, refetch };
-    
 }

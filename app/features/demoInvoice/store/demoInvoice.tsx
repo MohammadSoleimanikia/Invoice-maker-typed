@@ -5,7 +5,10 @@
 
 import { create } from "zustand";
 
-import type { DemoInvoice, DemoInvoiceItem } from "@/types/demoInvoice";
+import type {
+    DemoInvoice,
+    DemoInvoiceItem,
+} from "@/features/demoInvoice/types/demoInvoice";
 
 interface DemoInvoiceState {
     // State

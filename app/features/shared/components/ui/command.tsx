@@ -11,7 +11,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/features/shared/components/ui/dialog";
-import { cn } from "~/lib/utils";
+import { cn } from "@/features/shared/lib/utils";
 
 function Command({
     className,

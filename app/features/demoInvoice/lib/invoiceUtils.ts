@@ -7,7 +7,10 @@ import {
     InvoiceStatus,
     PaymentMode,
 } from "@/features/invoices/constants/invoice";
-import type { DemoInvoiceFormType, DemoInvoiceItem } from "@/types/demoInvoice";
+import type {
+    DemoInvoiceFormType,
+    DemoInvoiceItem,
+} from "@/features/demoInvoice/types/demoInvoice";
 
 /**
  * Calculate total amount from invoice items
