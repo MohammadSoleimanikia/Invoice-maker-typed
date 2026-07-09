@@ -70,7 +70,7 @@ export function Footer() {
                             <li ><a href="https://ble.ir/webfactor" target="_blank">کانال بله</a></li>
                         </ul>
                         <ul className="flex gap-1.5 items-center space-y-2 text-sm">
-                            آدرس: فارس - گله دار - خیابان بسیج
+                            فارس - شهرستان : مهر - بخش : گله دار - شهر : گله دار - محله : میدان امام - کوچه ((محمد قاسمی)) 
                         </ul>
                         <ul className="flex gap-1.5 items-center space-y-2 text-sm">
                             <li>تلفن: 09387051245</li>
