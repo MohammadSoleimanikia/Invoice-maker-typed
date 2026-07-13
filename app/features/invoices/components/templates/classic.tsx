@@ -1,4 +1,4 @@
-import { Instagram, MapPinHouse, PhoneCall } from "lucide-react";
+import {  MapPinHouse, PhoneCall } from "lucide-react";
 
 import type { User } from "@/features/auth/types/user.type";
 import type { InvoiceViewModel } from "@/features/invoices/types/invoicePreview.type";
@@ -194,8 +194,8 @@ export default function Classic({ invoice, user }: invoiceProps) {
             </section>
             <footer className="mt-auto border-t-2 border-slate-300 text-sm pt-2 flex gap-5 justify-around">
                 {displayUser?.profile.insta_link && (
-                    <div className="flex gap-2">
-                        <Instagram />
+                    <div className="flex gap-2 items-center">
+                        <img src={"/instagram.svg"} className="w-7 h-7" />
                         {displayUser.profile.insta_link}
                     </div>
                 )}
