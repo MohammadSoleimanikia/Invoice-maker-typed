@@ -1,5 +1,6 @@
 // features/profile/components/ProfileCard.tsx
 import {
+    CreditCard,
     Edit,
     Instagram,
     MapPin,
@@ -120,6 +121,14 @@ export default function ProfileCard() {
                                 label="آدرس فروشگاه"
                                 value={
                                     profile.profile.store_address || "ثبت نشده"
+                                }
+                            />
+                            <InfoRow
+                                icon={CreditCard}
+                                label="توضیحات پرداخت فاکتور"
+                                value={
+                                    profile.profile.payment_description ||
+                                    "ثبت نشده"
                                 }
                             />
                             <InfoRow

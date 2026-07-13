@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FormProvider } from "react-hook-form";
+import { Link } from "react-router";
 
 import { useCustomers } from "@/features/customers/hooks/useCustomers";
 import {
@@ -9,9 +10,11 @@ import {
     InvoiceSchema,
 } from "@/features/invoices/schema/invoice.schema";
 import { useProducts } from "@/features/products/hooks/useProducts";
+import { useProfile } from "@/features/profile/hooks/useProfile";
 import { Button } from "@/features/shared/components/ui/button";
 import { Input } from "@/features/shared/components/ui/input";
 import { Label } from "@/features/shared/components/ui/label";
+import { Textarea } from "@/features/shared/components/ui/textarea";
 
 import LoadingSpinner from "../../shared/components/ui/loadingSpinner";
 import { useInvoice } from "../hooks/useInvoice";
@@ -28,6 +31,10 @@ type EditInvoiceFormProps = {
 };
 
 export default function EditInvoiceForm({ invoiceId }: EditInvoiceFormProps) {
+    // Fetch user profile to get payment description
+    const { data: profile, isLoading: isProfileLoading } = useProfile();
+    const paymentDescription = profile?.profile?.payment_description || "";
+
     const [vatEnabled, setVatEnabled] = useState(false);
 
     const { invoice: invoiceData, isLoading: isInvoiceLoading } =
@@ -68,6 +75,7 @@ export default function EditInvoiceForm({ invoiceId }: EditInvoiceFormProps) {
     const watchedItems = watch("items");
     const addedValue = watch("added_value");
 
+    // Populate form with existing invoice data when it is fetched
     useEffect(() => {
         if (invoiceData) {
             const formattedItems = invoiceData.items.map((item: any) => ({
@@ -85,7 +93,8 @@ export default function EditInvoiceForm({ invoiceId }: EditInvoiceFormProps) {
                 customer_address: invoiceData.customer_address || "",
                 status: invoiceData.status || "pending",
                 payment_mode: invoiceData.payment_mode || "cash",
-                descriptions: invoiceData.descriptions || "",
+                descriptions:
+                    invoiceData.descriptions || paymentDescription || "",
                 discount: invoiceData.discount || 0,
                 added_value: invoiceData.added_value || 0,
             });
@@ -94,7 +103,7 @@ export default function EditInvoiceForm({ invoiceId }: EditInvoiceFormProps) {
                 setVatEnabled(true);
             }
         }
-    }, [invoiceData, reset]);
+    }, [invoiceData, paymentDescription, reset]);
 
     useEffect(() => {
         if (!vatEnabled) {
@@ -122,7 +131,7 @@ export default function EditInvoiceForm({ invoiceId }: EditInvoiceFormProps) {
         }
     };
 
-    if (isInvoiceLoading || isCustomersLoading) {
+    if (isInvoiceLoading || isCustomersLoading || isProfileLoading) {
         return <LoadingSpinner />;
     }
 
@@ -149,10 +158,31 @@ export default function EditInvoiceForm({ invoiceId }: EditInvoiceFormProps) {
                 <CustomerComboBox customers={customers} />
                 <CustomerDetailsFields />
 
-                {/* توضیحات */}
                 <div className="space-y-3">
                     <Label htmlFor="descriptions">توضیحات</Label>
-                    <Input {...register("descriptions")} id="descriptions" />
+
+                    {!paymentDescription && (
+                        <p className="rounded-md border border-yellow-200 bg-yellow-50 p-3 text-sm text-yellow-800">
+                            توضیحات پرداخت پیش‌فرضی در پروفایل ثبت نشده است. اگر
+                            می‌خواهید این بخش به‌صورت خودکار در فاکتورها پر شود،
+                            از بخش{" "}
+                            <Link
+                                className="text-primary hover:underline"
+                                to="/profile"
+                            >
+                                پروفایل
+                            </Link>{" "}
+                            آن را اضافه کنید.
+                        </p>
+                    )}
+
+                    <Textarea
+                        {...register("descriptions")}
+                        id="descriptions"
+                        rows={3}
+                        placeholder="توضیحات فاکتور یا شرایط پرداخت"
+                    />
+
                     {errors.descriptions && (
                         <span className="text-red-500">
                             {errors.descriptions.message}

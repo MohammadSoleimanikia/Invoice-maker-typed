@@ -18,6 +18,7 @@ export function useEditProfile(profile: User, onSuccess?: () => void) {
             store_address: profile.profile.store_address,
             insta_link: profile.profile.insta_link,
             hexcolor: profile.profile.hexcolor,
+            payment_description: profile.profile.payment_description,
         },
     });
 
@@ -44,6 +45,12 @@ export function useEditProfile(profile: User, onSuccess?: () => void) {
                 formData.append("insta_link", data.insta_link);
             if (data.hexcolor !== undefined)
                 formData.append("hexcolor", data.hexcolor);
+            if (data.payment_description != null) {
+                formData.append(
+                    "payment_description",
+                    data.payment_description,
+                );
+            }
             if (logoFile !== null) formData.append("logo", logoFile);
 
             return apiFetch("/account/profile/", {

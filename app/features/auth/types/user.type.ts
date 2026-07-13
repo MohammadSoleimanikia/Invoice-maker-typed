@@ -11,6 +11,7 @@ export type User = {
         insta_link: string | null;
         hexcolor: string;
         logo: string;
+        payment_description: string | null;
     };
 };
 
@@ -32,4 +33,5 @@ export type UserUpdate = {
     insta_link?: string | null;
     hexcolor?: string;
     logo?: File | string;
+    payment_description?: string | null;
 };

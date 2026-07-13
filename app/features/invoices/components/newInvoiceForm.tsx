@@ -13,6 +13,7 @@ import {
     InvoiceSchema,
 } from "@/features/invoices/schema/invoice.schema";
 import { useProducts } from "@/features/products/hooks/useProducts";
+import { useProfile } from "@/features/profile/hooks/useProfile";
 import { Button } from "@/features/shared/components/ui/button";
 import {
     Card,
@@ -36,6 +37,10 @@ import ProductMultiSelect from "./invoiceForm/productMultiSelect";
 import VatAndDiscountSection from "./invoiceForm/vatAndDiscountSection";
 
 export default function NewInvoiceForm() {
+    // get profile to get payment description
+    const { data: profile, isLoading: profileLoading } = useProfile();
+    const paymentDescription = profile?.profile?.payment_description || "";
+
     const navigate = useNavigate();
     const [vatEnabled, setVatEnabled] = useState(false);
 
@@ -61,7 +66,21 @@ export default function NewInvoiceForm() {
         formState: { errors },
         watch,
         setValue,
+        getValues,
     } = methods;
+
+    // set value of descriptions field to paymentDescription if it's empty
+    useEffect(() => {
+        if (!paymentDescription) return;
+
+        const currentDescription = getValues("descriptions");
+
+        if (!currentDescription || currentDescription.trim() === "") {
+            setValue("descriptions", paymentDescription, {
+                shouldDirty: false,
+            });
+        }
+    }, [paymentDescription, getValues, setValue]);
     const { mutateAsync: createInvoice, isPending } = useCreateInvoice();
     // make page size high cause we want to search into all of the products and customers
     const { products } = useProducts({ pageSize: 1000 });
@@ -107,7 +126,7 @@ export default function NewInvoiceForm() {
         }
     };
 
-    if (isLoading) {
+    if (isLoading || profileLoading) {
         return <LoadingSpinner />;
     }
 
@@ -219,15 +238,26 @@ export default function NewInvoiceForm() {
                     <CardHeader>
                         <CardTitle>توضیحات</CardTitle>
                     </CardHeader>
+
                     <CardContent>
                         <div className="space-y-4">
+                            {!paymentDescription && (
+                                <div className="rounded-md border border-yellow-200 bg-yellow-50 p-3 text-sm text-yellow-800">
+                                    توضیحات پرداخت پیش‌فرضی در پروفایل ثبت نشده
+                                    است. اگر می‌خواهید این بخش به‌صورت خودکار در
+                                    فاکتورها پر شود، از بخش <Link className="text-primary hover:underline" to="/profile">پروفایل</Link> آن را اضافه
+                                    کنید.
+                                </div>
+                            )}
+
                             <div className="space-y-2">
                                 <Textarea
                                     {...register("descriptions")}
                                     id="descriptions"
-                                    placeholder="توضیحات اضافی برای فاکتور (اختیاری)"
+                                    placeholder="توضیحات اضافی برای فاکتور، شرایط پرداخت یا شماره کارت"
                                     rows={3}
                                 />
+
                                 {errors.descriptions && (
                                     <span className="text-red-500 text-sm">
                                         {errors.descriptions.message}
@@ -260,7 +290,6 @@ export default function NewInvoiceForm() {
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            
                             <VatAndDiscountSection
                                 vatEnabled={vatEnabled}
                                 onVatToggle={setVatEnabled}

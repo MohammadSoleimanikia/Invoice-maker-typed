@@ -64,6 +64,7 @@ export default function Dashboard() {
             </div>
             {!isProfileComplete() && (
                 <Alert className="border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20">
+                    
                     <AlertDescription className="flex items-center justify-between text-yellow-800 dark:text-yellow-300">
                         <span>
                             ⚠️ پروفایل شما ناقص است. لطفاً اطلاعات خود را تکمیل

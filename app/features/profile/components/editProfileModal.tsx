@@ -29,7 +29,9 @@ export default function EditProfileModal({
 }: EditProfileModalProps) {
     const [logoFile, setLogoFile] = useState<File | null>(null);
     // ✅ state برای همگام‌سازی رنگ
-    const [hexcolor, setHexcolor] = useState(profile.profile.hexcolor || "#3b82f6");
+    const [hexcolor, setHexcolor] = useState(
+        profile.profile.hexcolor || "#3b82f6",
+    );
 
     const { form, mutateAsync, isPending } = useEditProfile(profile, () => {
         onOpenChange(false);
@@ -52,6 +54,7 @@ export default function EditProfileModal({
             store_address: profile.profile.store_address,
             insta_link: profile.profile.insta_link,
             hexcolor: profile.profile.hexcolor,
+            payment_description: profile.profile.payment_description,
         });
         setHexcolor(profile.profile.hexcolor || "#3b82f6");
         setLogoFile(null);
@@ -137,7 +140,35 @@ export default function EditProfileModal({
                             {errors.store_name?.message}
                         </p>
                     </div>
+                    <div className="space-y-2 col-span-2">
+                        <Label htmlFor="payment_description">
+                            توضیحات پرداخت فاکتور
+                        </Label>
 
+                        <Textarea
+                            id="payment_description"
+                            placeholder="مثال: شماره کارت 6037 9973 5555 4444."
+                            rows={4}
+                            {...register("payment_description", {
+                                maxLength: {
+                                    value: 500,
+                                    message:
+                                        "توضیحات پرداخت نباید بیشتر از ۵۰۰ کاراکتر باشد",
+                                },
+                            })}
+                        />
+
+                        <p className="text-xs text-muted-foreground">
+                            این متن به‌صورت پیش‌فرض در بخش توضیحات فاکتورهای
+                            جدید قرار می‌گیرد.
+                        </p>
+
+                        {errors.payment_description && (
+                            <p className="text-red-500 text-sm">
+                                {errors.payment_description.message}
+                            </p>
+                        )}
+                    </div>
                     <div className="space-y-2">
                         <Label htmlFor="store_description">
                             توضیحات فروشگاه
@@ -196,14 +227,18 @@ export default function EditProfileModal({
                                 type="color"
                                 id="hexcolor"
                                 value={hexcolor}
-                                onChange={(e) => handleColorChange(e.target.value)}
+                                onChange={(e) =>
+                                    handleColorChange(e.target.value)
+                                }
                                 className="w-16 h-10 p-1 cursor-pointer"
                             />
                             <Input
                                 type="text"
                                 placeholder="#RRGGBB"
                                 value={hexcolor}
-                                onChange={(e) => handleColorChange(e.target.value)}
+                                onChange={(e) =>
+                                    handleColorChange(e.target.value)
+                                }
                                 className="flex-1 font-mono"
                                 dir="ltr"
                             />
@@ -224,7 +259,9 @@ export default function EditProfileModal({
                                 if (!file) return;
 
                                 if (file.size > 250 * 1024) {
-                                    toast.error("حجم فایل نباید بیشتر از 250 کیلوبایت باشد");
+                                    toast.error(
+                                        "حجم فایل نباید بیشتر از 250 کیلوبایت باشد",
+                                    );
                                     e.target.value = "";
                                     setLogoFile(null);
                                     return;
