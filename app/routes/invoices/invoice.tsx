@@ -9,7 +9,7 @@ import { useInvoice } from "@/features/invoices/hooks/useInvoice";
 import type { Invoice } from "@/features/invoices/types/invoicePreview.type";
 import { Button } from "@/features/shared/components/ui/button";
 import LoadingSpinner from "@/features/shared/components/ui/loadingSpinner";
-export type TemplateType = "classic" | "modern" | "minimal";
+export type TemplateType = "classic" | "modern" | "minimal" | "boutique";
 export default function Invoice() {
     const { id } = useParams<{ id: string }>();
     const {
@@ -20,7 +20,7 @@ export default function Invoice() {
     } = useInvoice(id as string);
     const { user, isLoading: isUserLoading } = useUser();
 
-    const [template, setTemplate] = useState<TemplateType>("minimal");
+    const [template, setTemplate] = useState<TemplateType>("boutique");
     if (isInvoiceLoading || isUserLoading) return <LoadingSpinner />;
     if (isInvoiceError) {
         return (

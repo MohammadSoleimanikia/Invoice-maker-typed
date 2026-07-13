@@ -2,13 +2,14 @@ import type { User } from "@/features/auth/types/user.type";
 import Classic from "@/features/invoices/components/templates/classic";
 import Minimal from "@/features/invoices/components/templates/minimal";
 import Modern from "@/features/invoices/components/templates/modern";
+import Receipt from "@/features/invoices/components/templates/receipt";
 import { buildInvoiceViewModel } from "@/features/invoices/libs/invoiceViewModel";
 import Zoomable from "@/features/shared/components/zoomable";
 
 import type { Invoice } from "../types/invoicePreview.type";
 
 type InvoicePreviewProps = {
-    template: "classic" | "modern" | "minimal";
+    template: "classic" | "modern" | "minimal" | "boutique";
     invoice: Invoice;
     user: User | null;
 };
@@ -36,6 +37,8 @@ export default function InvoicePreview({
                         <Classic invoice={viewModel} user={user} />
                     ) : template === "modern" ? (
                         <Modern invoice={viewModel} user={user} />
+                    ) : template === "boutique" ? (
+                        <Receipt invoice={viewModel} user={user} />
                     ) : (
                         <Minimal invoice={viewModel} user={user} />
                     )}

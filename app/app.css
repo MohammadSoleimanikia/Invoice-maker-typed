@@ -50,17 +50,7 @@ input[type="number"]::-webkit-outer-spin-button {
     font-family: "Vazir", system-ui, -apple-system, sans-serif;
 }
 
-@media print {
-    @page {
-        size: A4;
-        margin: 0;
-    }
 
-    * {
-        -webkit-print-color-adjust: exact !important;
-        color-adjust: exact !important;
-    }
-}
 :root {
     --background: #ffffff;
     --foreground: #1d1f20;
@@ -259,7 +249,27 @@ input[type="number"]::-webkit-outer-spin-button {
         @apply text-3xl font-semibold tracking-tight my-5;
     }
 }
+
 @media print {
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+
+    html,
+    body {
+        width: 210mm !important;
+        height: 297mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
+
+    body {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
     [data-slot="sidebar-container"],
     [data-slot="sidebar-gap"],
     [data-slot="sidebar"],
@@ -268,13 +278,34 @@ input[type="number"]::-webkit-outer-spin-button {
         display: none !important;
     }
 
-    body {
-        overflow: visible !important;
+    .invoice-print-page {
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+        max-height: 297mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        page-break-before: avoid !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+        break-before: avoid !important;
+        break-after: avoid !important;
+        break-inside: avoid !important;
     }
 
-    * {
-        position: static !important;
-        height: auto !important;
-        max-height: none !important;
+    .invoice-print-inner {
+        width: 100% !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+        max-height: 297mm !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    .invoice-print-footer {
+        margin-top: auto !important;
+        flex-shrink: 0 !important;
     }
 }

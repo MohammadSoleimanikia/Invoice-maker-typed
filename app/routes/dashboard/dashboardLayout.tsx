@@ -12,7 +12,7 @@ import {
 export default function DashboardLayout() {
     return (
         <SidebarProvider className="print:block print:min-h-0">
-            <AppSidebar className="print:hidden" />
+            <AppSidebar  />
 
             <SidebarInset className="overflow-hidden print:m-0 print:w-full print:overflow-visible">
                 {/* هدر */}

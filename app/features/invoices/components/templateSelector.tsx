@@ -10,7 +10,7 @@ import {
 import type { TemplateType } from "@/routes/invoices/invoice";
 
 type TemplateSelectorProps = {
-    template: "classic" | "modern" | "minimal";
+    template: "classic" | "modern" | "minimal" | "boutique";
     setTemplate: Dispatch<SetStateAction<TemplateType>>;
 };
 /**
@@ -27,7 +27,8 @@ export const TemplateSelector = ({
                 if (
                     value === "classic" ||
                     value === "modern" ||
-                    value === "minimal"
+                    value === "minimal" ||
+                    value === "boutique"
                 ) {
                     setTemplate(value);
                 }
@@ -40,6 +41,7 @@ export const TemplateSelector = ({
                 <SelectItem value="classic">کلاسیک</SelectItem>
                 <SelectItem value="minimal">مینیمال</SelectItem>
                 <SelectItem value="modern">مدرن</SelectItem>
+                <SelectItem value="boutique">بوتیک</SelectItem>
             </SelectContent>
         </Select>
     );
