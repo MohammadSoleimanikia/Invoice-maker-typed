@@ -50,7 +50,7 @@ function hexToRgba(hex: string, alpha: number) {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-export default function Receipt({ invoice, user }: ReceiptProps) {
+export default function Boutique({ invoice, user }: ReceiptProps) {
     const store = user?.profile;
     const brandColor = normalizeHexColor(store?.hexcolor);
     const logo = store?.logo ? buildLogoUrl(store.logo) : "";

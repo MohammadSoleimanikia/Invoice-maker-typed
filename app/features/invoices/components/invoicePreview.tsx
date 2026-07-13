@@ -1,8 +1,8 @@
 import type { User } from "@/features/auth/types/user.type";
+import Boutique from "@/features/invoices/components/templates/boutique";
 import Classic from "@/features/invoices/components/templates/classic";
 import Minimal from "@/features/invoices/components/templates/minimal";
 import Modern from "@/features/invoices/components/templates/modern";
-import Receipt from "@/features/invoices/components/templates/receipt";
 import { buildInvoiceViewModel } from "@/features/invoices/libs/invoiceViewModel";
 import Zoomable from "@/features/shared/components/zoomable";
 
@@ -38,7 +38,7 @@ export default function InvoicePreview({
                     ) : template === "modern" ? (
                         <Modern invoice={viewModel} user={user} />
                     ) : template === "boutique" ? (
-                        <Receipt invoice={viewModel} user={user} />
+                        <Boutique invoice={viewModel} user={user} />
                     ) : (
                         <Minimal invoice={viewModel} user={user} />
                     )}

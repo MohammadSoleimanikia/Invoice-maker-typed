@@ -3,21 +3,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 import type { User } from "@/features/auth/types/user.type";
-import Classic from "@/features/invoices/components/templates/classic";
-import Minimal from "@/features/invoices/components/templates/minimal";
-import Modern from "@/features/invoices/components/templates/modern";
+import Boutique from "@/features/invoices/components/templates/boutique";
 import { buildInvoiceViewModel } from "@/features/invoices/libs/invoiceViewModel";
 import type { PublicInvoice } from "@/features/invoices/types/invoice";
 import type { Invoice } from "@/features/invoices/types/invoicePreview.type";
 import { useTheme } from "@/features/shared/components/themeProvider";
 import { Button } from "@/features/shared/components/ui/button";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/features/shared/components/ui/select";
 import Zoomable from "@/features/shared/components/zoomable";
 import { apiFetch } from "@/features/shared/lib/api";
 
@@ -28,7 +19,6 @@ export default function PublicInvoice() {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [template, setTemplate] = useState("minimal");
 
     useEffect(() => {
         const fetchInvoice = async () => {
@@ -53,7 +43,13 @@ export default function PublicInvoice() {
                 }
 
                 // Map PublicInvoice data to Invoice format for templates
-                setInvoice(invoiceData as any);
+                setInvoice({
+                    ...invoiceData,
+                    descriptions:
+                        invoiceData.descriptions ||
+                        response.payment_description ||
+                        "",
+                } as any);
 
                 // Build user/creator object from seller info at top level
                 const sellerInfo: User = {
@@ -69,6 +65,8 @@ export default function PublicInvoice() {
                         insta_link: response.insta_link || "",
                         hexcolor: response.hexcolor || "#000000",
                         logo: response.logo || "",
+                        payment_description:
+                            response.payment_description || null,
                     },
                 };
 
@@ -135,16 +133,6 @@ export default function PublicInvoice() {
                     </a>
                 </div>
                 <div className="flex gap-4">
-                    <Select value={template} onValueChange={setTemplate}>
-                        <SelectTrigger className="w-fit bg-white">
-                            <SelectValue placeholder="قالب" />
-                        </SelectTrigger>
-                        <SelectContent position="popper">
-                            <SelectItem value="classic">کلاسیک</SelectItem>
-                            <SelectItem value="minimal">مینیمال</SelectItem>
-                            <SelectItem value="modern">مدرن</SelectItem>
-                        </SelectContent>
-                    </Select>
                     <Button onClick={() => window.print()}>چاپ</Button>
                     <Button
                         variant="outline"
@@ -171,13 +159,7 @@ export default function PublicInvoice() {
                                 "
             >
                 <Zoomable>
-                    {template === "classic" ? (
-                        <Classic invoice={viewModel} user={user} />
-                    ) : template === "modern" ? (
-                        <Modern invoice={viewModel} user={user} />
-                    ) : (
-                        <Minimal invoice={viewModel} user={user} />
-                    )}
+                    <Boutique invoice={viewModel} user={user} />
                 </Zoomable>
             </div>
         </>

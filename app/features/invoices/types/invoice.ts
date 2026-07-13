@@ -1,7 +1,4 @@
-/**
- * Public Invoice - returned from /api/public/invoices/{token}/
- * Has simplified structure with seller info at top level
- */
+
 export type PublicInvoice = {
     invoice: {
         id: string;
@@ -22,6 +19,7 @@ export type PublicInvoice = {
         added_value: number;
         discount: number;
     };
+
     // Seller/Store Information
     id: number;
     creator: string | null;
@@ -30,7 +28,8 @@ export type PublicInvoice = {
     store_address: string | null;
     insta_link: string | null;
     hexcolor: string;
-    logo: string | null; // Full URL path
+    logo: string | null;
+    payment_description: string | null;
     token: string;
     created_at: string;
     is_active: boolean;
