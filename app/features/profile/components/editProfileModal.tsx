@@ -68,7 +68,7 @@ export default function EditProfileModal({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-h-[90dvh] w-[95vw] overflow-y-auto sm:max-w-2xl">
                 <DialogHeader>
                     <DialogTitle>ویرایش پروفایل</DialogTitle>
                 </DialogHeader>
