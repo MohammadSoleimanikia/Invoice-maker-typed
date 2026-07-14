@@ -13,6 +13,7 @@ export function useMarkInvoiceAsPaid() {
         onSuccess: (_, { id }) => {
             queryClient.invalidateQueries({ queryKey: ["invoices"] });
             queryClient.invalidateQueries({ queryKey: ["invoice", id] });
+            queryClient.invalidateQueries({ queryKey: ["dashboard"] });
         },
     });
 }
