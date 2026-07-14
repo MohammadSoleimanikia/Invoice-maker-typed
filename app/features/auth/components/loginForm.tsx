@@ -10,7 +10,6 @@ import {
     phoneFormSchema,
     type PhoneFormType,
 } from "@/features/auth/schema/auth.schema";
-import type { Token } from "@/features/auth/types/token";
 import { Button } from "@/features/shared/components/ui/button";
 import { Card, CardContent } from "@/features/shared/components/ui/card";
 import {
@@ -94,14 +93,15 @@ export function LoginForm({
 
     async function onSubmitOtp(data: OtpFormType) {
         try {
-            const result = await apiFetch<Token>("/account/register/", {
+            await apiFetch("/account/register/", {
                 method: "POST",
                 body: JSON.stringify({
                     phone_number: phone,
                     otp_code: data.otp_code,
                 }),
             });
-            logIn(result);
+
+            logIn();
             navigate("/dashboard");
         } catch (error: any) {
             if (error?.otp_code === "OTP has expired.") {

@@ -1,11 +1,16 @@
 import { Navigate, Outlet } from "react-router";
 
-import useAuth from "@/features/auth/store/authStore";
+import { useUser } from "@/features/auth/hooks/useUser";
+import LoadingSpinner from "@/features/shared/components/ui/loadingSpinner";
 
 export default function GuestOnly() {
-    const token = useAuth((state) => state.token);
+    const { user, isLoading } = useUser();
 
-    if (token) {
+    if (isLoading) {
+        return <LoadingSpinner />;
+    }
+
+    if (user) {
         return <Navigate to="/dashboard" replace />;
     }
 

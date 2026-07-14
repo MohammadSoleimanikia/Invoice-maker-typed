@@ -1,9 +1,8 @@
 // features/dashboard/components/DashboardHeader.tsx
 import { Moon, Sun, User } from "lucide-react";
 import { useNavigate } from "react-router";
-import { toast } from "sonner";
 
-import useAuth from "@/features/auth/store/authStore";
+import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useProfile } from "@/features/profile/hooks/useProfile";
 import { useTheme } from "@/features/shared/components/themeProvider";
 import {
@@ -25,25 +24,20 @@ import { buildLogoUrl } from "@/features/shared/lib/utils";
 export function DashboardHeader() {
     const navigate = useNavigate();
     const { theme, setTheme } = useTheme();
-    const logOut = useAuth((state) => state.logOut);
     const { data: profile } = useProfile();
+    const { mutate: logout, isPending: isLoggingOut } = useLogout();
 
     const fullName =
         [profile?.first_name, profile?.last_name].filter(Boolean).join(" ") ||
         "کاربر عزیز";
 
-    const handleLogout = () => {
-        logOut();
-        toast.success("با موفقیت خارج شدید");
-        navigate("/login");
-    };
     const logoUrl = profile?.profile?.logo
         ? buildLogoUrl(profile.profile.logo)
         : null;
+
     return (
         <header className="flex justify-between items-center px-4 py-2 border-b bg-background">
             <div className="flex items-center gap-2">
-                {/* change theme button */}
                 <Button
                     variant="ghost"
                     size="icon"
@@ -57,7 +51,6 @@ export function DashboardHeader() {
                     <span className="sr-only">تغییر تم</span>
                 </Button>
 
-                {/* Avatar Dropdown */}
                 <DropdownMenu dir="rtl">
                     <DropdownMenuTrigger asChild>
                         <Button
@@ -79,6 +72,7 @@ export function DashboardHeader() {
                             </Avatar>
                         </Button>
                     </DropdownMenuTrigger>
+
                     <DropdownMenuContent className="w-56" align="end">
                         <div className="flex items-center gap-3 px-3 py-2 border-b">
                             <Avatar className="h-8 w-8">
@@ -94,6 +88,7 @@ export function DashboardHeader() {
                                     </AvatarFallback>
                                 )}
                             </Avatar>
+
                             <div className="flex flex-col">
                                 <span className="text-sm font-medium">
                                     {fullName}
@@ -111,6 +106,7 @@ export function DashboardHeader() {
                             >
                                 <span>پروفایل</span>
                             </DropdownMenuItem>
+
                             <DropdownMenuItem
                                 onClick={() => navigate("/subscription")}
                                 className="cursor-pointer text-right flex justify-between"
@@ -122,10 +118,18 @@ export function DashboardHeader() {
                         <DropdownMenuSeparator />
 
                         <DropdownMenuItem
-                            onClick={handleLogout}
+                            disabled={isLoggingOut}
+                            onSelect={(event) => {
+                                event.preventDefault();
+                                logout();
+                            }}
                             className="text-red-600 focus:text-red-600 cursor-pointer text-right flex justify-between"
                         >
-                            <span>خروج از حساب</span>
+                            <span>
+                                {isLoggingOut
+                                    ? "در حال خروج..."
+                                    : "خروج از حساب"}
+                            </span>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
