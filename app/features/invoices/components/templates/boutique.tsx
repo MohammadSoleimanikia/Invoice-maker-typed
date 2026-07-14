@@ -304,7 +304,7 @@ export default function Boutique({ invoice, user }: ReceiptProps) {
                     <div className="mr-auto w-full max-w-[310px] space-y-2">
                         <div className="flex items-center justify-between text-xs">
                             <span className="text-[var(--boutique-muted)]">
-                                جمع جزء
+                               جمع کالا ها
                             </span>
                             <span>{toMoney(subtotal)} تومان</span>
                         </div>
