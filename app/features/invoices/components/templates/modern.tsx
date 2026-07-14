@@ -132,6 +132,11 @@ function getReadableTextColor(background: string) {
 
 function createBrandPalette(hex?: string | null) {
     const brand = normalizeHexColor(hex);
+
+    // بک‌گراند کل صفحه: ۱۰٪ رنگ برند + ۹۰٪ سفید
+    const pageBg = mixColors(brand, "#ffffff", 0.9);
+    const pageText = "#172033";
+
     const luminance = getLuminance(brand);
     const text = getReadableTextColor(brand);
 
@@ -139,7 +144,7 @@ function createBrandPalette(hex?: string | null) {
     const isVeryLight = luminance > 0.78;
     const isVeryDark = luminance < 0.12;
 
-    const panel = brand; // دقیقاً رنگ برند؛ جای اصلی استفاده از رنگ کاربر
+    const panel = brand;
     const panelDark = isLight ? darken(brand, 0.22) : darken(brand, 0.14);
     const panelDarker = isLight ? darken(brand, 0.34) : darken(brand, 0.24);
 
@@ -149,29 +154,39 @@ function createBrandPalette(hex?: string | null) {
           ? lighten(brand, 0.2)
           : lighten(brand, 0.22);
 
-    const bgMid = brand; // دقیقاً رنگ برند
+    const bgMid = brand;
     const bgBottom = isLight ? darken(brand, 0.28) : darken(brand, 0.34);
 
     const totalText = isVeryLight ? darken(brand, 0.55) : panelDarker;
 
     return {
         brand,
+
+        pageBg,
+        pageText,
+        pageTextFaint: rgba(pageText, 0.08),
+
         bgTop,
         bgMid,
         bgBottom,
+
         panel,
         panelDark,
         panelDarker,
+
         text,
         textSoft: rgba(text, 0.82),
         textMuted: rgba(text, 0.68),
         textFaint: rgba(text, 0.1),
+
         border: rgba(text, 0.58),
         borderSoft: rgba(text, 0.25),
-        panelSoft: rgba(text, 0.14),
+        panelSoft: mixColors(brand, "#ffffff", 0.75),
         rowBorder: rgba(text, 0.16),
+
         dots: rgba(text, 0.26),
         dotsStrong: rgba(text, 0.42),
+
         totalBg: "#ffffff",
         totalText,
     };
@@ -197,6 +212,10 @@ export default function Modern({ invoice, user }: InvoiceProps) {
     const palette = createBrandPalette(store?.hexcolor);
 
     const style = {
+        "--studio-page-bg": palette.pageBg,
+        "--studio-page-text": palette.pageText,
+        "--studio-page-text-faint": palette.pageTextFaint,
+
         "--studio-bg-top": palette.bgTop,
         "--studio-bg-mid": palette.bgMid,
         "--studio-bg-bottom": palette.bgBottom,
@@ -226,25 +245,12 @@ export default function Modern({ invoice, user }: InvoiceProps) {
         <div
             dir="rtl"
             style={style}
-            className="invoice-print-page mx-auto h-[297mm] w-[210mm] shrink-0 overflow-hidden bg-[linear-gradient(180deg,var(--studio-bg-top)_0%,var(--studio-bg-mid)_43%,var(--studio-bg-bottom)_100%)] p-0 text-[12px] text-[var(--studio-text)] print:m-0"
+            className="invoice-print-page mx-auto h-[297mm] w-[210mm] shrink-0 overflow-hidden bg-[var(--studio-page-bg)] p-0 text-[12px] text-[var(--studio-page-text)] print:m-0"
         >
             <div className="invoice-print-inner relative flex h-full flex-col overflow-hidden px-8 py-7">
                 {/* Decorative title ghost */}
-                <div className="pointer-events-none absolute -top-10 left-8 text-[80px] font-black tracking-[0.05em] text-[var(--studio-text-faint)]">
+                <div className="pointer-events-none absolute -top-10 left-8 text-[80px] font-black tracking-[0.05em] text-[var(--studio-page-text-faint)]">
                     {store?.store_name}
-                </div>
-
-                {/* Dots top right */}
-                <div className="pointer-events-none absolute right-[128mm] top-[34mm] h-[35mm] w-[74mm] opacity-70 [background-image:radial-gradient(circle,var(--studio-dots)_1.8px,transparent_2px)] [background-size:9px_9px]" />
-
-                {/* Dots bottom left */}
-                <div className="pointer-events-none absolute bottom-[70mm] left-2 h-[28mm] w-[70mm] opacity-70 [background-image:radial-gradient(circle,var(--studio-dots-strong)_1.8px,transparent_2px)] [background-size:9px_9px]" />
-
-                {/* XOX decorations */}
-                <div className="pointer-events-none absolute bottom-[82mm] right-2 flex items-center gap-3 text-[54px] font-black leading-none text-[var(--studio-text-soft)]">
-                    <span>×</span>
-                    <span className="font-light">○</span>
-                    <span>×</span>
                 </div>
 
                 {/* Top brand bar */}
@@ -264,17 +270,17 @@ export default function Modern({ invoice, user }: InvoiceProps) {
                             </div>
                         )}
 
-                        <div className="min-w-0">
-                            <p className="truncate text-base font-bold uppercase tracking-[0.2em] text-[var(--studio-text-soft)]">
+                        <div className="min-w-0 ">
+                            <p className="truncate text-base font-bold uppercase tracking-[0.2em] text-[var(--studio-page-text)]">
                                 {store?.store_name || "نام فروشگاه"}
                             </p>
 
-                            <p className="truncate text-xs text-[var(--studio-text-muted)]">
+                            <p className="truncate text-xs text-[var(--studio-page-text)]/70">
                                 {store?.store_description || "توضیحات فروشگاه"}
                             </p>
 
                             {displayUser?.phone_number && (
-                                <p className="truncate text-xs text-[var(--studio-text-muted)]">
+                                <p className="truncate text-xs text-[var(--studio-page-text)]/70">
                                     {phoneFormatter(displayUser.phone_number)}
                                 </p>
                             )}
@@ -316,13 +322,13 @@ export default function Modern({ invoice, user }: InvoiceProps) {
                     <div>
                         <h1
                             dir="ltr"
-                            className="text-[54px] font-black leading-none tracking-[0.06em] text-[var(--studio-text)]"
+                            className="text-[54px] font-black leading-none tracking-[0.06em] text-[var(--studio-page-text)]"
                         >
                             {invoice.title || "فاکتور فروش"}
                         </h1>
                     </div>
 
-                    <div className="rounded-full border border-[var(--studio-border)] px-5 py-2 text-xs font-bold text-[var(--studio-text-soft)]">
+                    <div className="rounded-full border border-[var(--studio-border-soft)] bg-[var(--studio-total-bg)] px-5 py-2 text-xs font-bold text-[var(--studio-total-text)]">
                         {invoice.statusText}
                     </div>
                 </section>
@@ -331,10 +337,10 @@ export default function Modern({ invoice, user }: InvoiceProps) {
                 <main className="relative z-10 grid flex-1 grid-cols-[58mm_1fr] gap-7 overflow-hidden">
                     {/* Sidebar */}
                     <aside className="space-y-3">
-                        <section className="rounded-xl border border-[var(--studio-border)] bg-[var(--studio-panel-soft)] p-4 text-xs shadow-sm backdrop-blur">
+                        <section className="rounded-xl border border-[var(--studio-border)] bg-[var(--studio-panel-soft)] p-4 text-xs text-[var(--studio-page-text)] shadow-sm backdrop-blur">
                             <div className="space-y-3">
                                 <div>
-                                    <p className="text-[10px] font-bold text-[var(--studio-text-muted)]">
+                                    <p className="text-[10px] font-bold text-[var(--studio-page-text)]/70">
                                         شماره فاکتور
                                     </p>
                                     <p className="mt-1 font-bold">
@@ -343,7 +349,7 @@ export default function Modern({ invoice, user }: InvoiceProps) {
                                 </div>
 
                                 <div>
-                                    <p className="text-[10px] font-bold text-[var(--studio-text-muted)]">
+                                    <p className="text-[10px] font-bold text-[var(--studio-page-text)]/70">
                                         تاریخ صدور
                                     </p>
                                     <p className="mt-1 font-bold">
@@ -351,14 +357,7 @@ export default function Modern({ invoice, user }: InvoiceProps) {
                                     </p>
                                 </div>
 
-                                <div>
-                                    <p className="text-[10px] font-bold text-[var(--studio-text-muted)]">
-                                        روش پرداخت
-                                    </p>
-                                    <p className="mt-1 font-bold">
-                                        {invoice.paymentText || "-"}
-                                    </p>
-                                </div>
+                                
                             </div>
                         </section>
 
@@ -418,14 +417,14 @@ export default function Modern({ invoice, user }: InvoiceProps) {
                             <table className="w-full border-collapse text-[11px]">
                                 <thead>
                                     <tr className="bg-[var(--studio-panel)] text-[var(--studio-text)]">
-                                        <th className="w-[14%] px-3 py-3 text-center font-black">
-                                            تعداد
-                                        </th>
                                         <th className="px-3 py-3 text-right font-black">
                                             شرح کالا
                                         </th>
                                         <th className="w-[22%] px-3 py-3 text-center font-black">
                                             قیمت واحد
+                                        </th>
+                                        <th className="w-[14%] px-3 py-3 text-center font-black">
+                                            تعداد
                                         </th>
                                         <th className="w-[22%] px-3 py-3 text-left font-black">
                                             قیمت کل
@@ -439,21 +438,19 @@ export default function Modern({ invoice, user }: InvoiceProps) {
                                             key={`${item.name}-${index}`}
                                             className="border-b border-[var(--studio-row-border)] last:border-b-0"
                                         >
-                                            <td className="px-3 py-3 text-center font-bold text-[var(--studio-text-soft)]">
+                                            <td className="px-3 py-3 text-right font-bold text-[var(--studio-page-text)]">
+                                                {item.name}
+                                            </td>
+
+                                            <td className="px-3 py-3 text-center text-[var(--studio-page-text)]/80">
+                                                {toMoney(item.unitPrice)}
+                                            </td>
+                                            <td className="px-3 py-3 text-center font-bold text-[var(--studio-page-text)]/80">
                                                 {Number(
                                                     item.quantity,
                                                 ).toLocaleString("fa-IR")}
                                             </td>
-
-                                            <td className="px-3 py-3 text-right font-bold text-[var(--studio-text)]">
-                                                {item.name}
-                                            </td>
-
-                                            <td className="px-3 py-3 text-center text-[var(--studio-text-soft)]">
-                                                {toMoney(item.unitPrice)}
-                                            </td>
-
-                                            <td className="px-3 py-3 text-left font-bold text-[var(--studio-text)]">
+                                            <td className="px-3 py-3 text-left font-bold text-[var(--studio-page-text)]">
                                                 {toMoney(item.total)}
                                             </td>
                                         </tr>
@@ -462,9 +459,9 @@ export default function Modern({ invoice, user }: InvoiceProps) {
                             </table>
                         </div>
 
-                        <div className="mt-5 mr-auto w-full max-w-[98mm] space-y-2 text-sm">
+                        <div className="mt-5 mr-auto w-full max-w-[98mm] space-y-2 text-sm text-[var(--studio-page-text)]">
                             <div className="flex items-center justify-between px-4">
-                                <span className="font-bold text-[var(--studio-text-soft)]">
+                                <span className="font-bold text-[var(--studio-page-text)]/80">
                                     جمع کالاها:
                                 </span>
                                 <span className="font-bold">
@@ -474,7 +471,7 @@ export default function Modern({ invoice, user }: InvoiceProps) {
 
                             {invoice.discount > 0 && (
                                 <div className="flex items-center justify-between px-4">
-                                    <span className="font-bold text-[var(--studio-text-soft)]">
+                                    <span className="font-bold text-[var(--studio-page-text)]/80">
                                         تخفیف:
                                     </span>
                                     <span className="font-bold">
@@ -485,7 +482,7 @@ export default function Modern({ invoice, user }: InvoiceProps) {
 
                             {invoice.added_value > 0 && (
                                 <div className="flex items-center justify-between px-4">
-                                    <span className="font-bold text-[var(--studio-text-soft)]">
+                                    <span className="font-bold text-[var(--studio-page-text)]/80">
                                         ارزش افزوده:
                                     </span>
                                     <span className="font-bold">
@@ -503,25 +500,25 @@ export default function Modern({ invoice, user }: InvoiceProps) {
                                 </span>
                             </div>
 
-                            <p className="px-4 text-[10px] leading-5 text-[var(--studio-text-muted)]">
+                            <p className="px-4 text-[10px] leading-5 text-[var(--studio-page-text)]/70">
                                 مبلغ به حروف: {invoice.totalText} تومان
                             </p>
                         </div>
 
-                        <div className="mt-auto flex items-end justify-between pt-5">
-                            <div className="max-w-[92mm]">
+                        <div className="mt-auto flex items-end justify-between pt-5 text-[var(--studio-page-text)]">
+                            <div className="flex max-w-[92mm] flex-col items-center">
                                 <p className="mb-2 text-sm font-black">
                                     شرایط و توضیحات
                                 </p>
 
-                                <p className="line-clamp-4 text-[10px] leading-5 text-[var(--studio-text-soft)]">
+                                <p className="line-clamp-4 text-[10px] leading-5 text-[var(--studio-page-text)]/80">
                                     {invoice.descriptions ||
                                         "این فاکتور به‌صورت الکترونیکی صادر شده است. لطفاً اطلاعات کالا، مبلغ و مشخصات پرداخت را پیش از تسویه بررسی کنید."}
                                 </p>
                             </div>
 
                             <div className="text-center">
-                                <div className="mb-2 font-[cursive] text-2xl text-[var(--studio-text-soft)]">
+                                <div className="mb-2 font-[cursive] text-2xl text-[var(--studio-page-text)]/80">
                                     {store?.store_name || "Signature"}
                                 </div>
 
@@ -534,11 +531,11 @@ export default function Modern({ invoice, user }: InvoiceProps) {
                                         .join(" ") || "مدیریت فروشگاه"}
                                 </p>
 
-                                <p className="mt-1 text-[10px] text-[var(--studio-text-muted)]">
+                                <p className="mt-1 text-[10px] text-[var(--studio-page-text)]/70">
                                     صادرکننده فاکتور
                                 </p>
 
-                                <div className="mx-auto mt-5 h-1 w-12 rounded-full bg-[var(--studio-text)]" />
+                                <div className="mx-auto mt-5 h-1 w-12 rounded-full bg-[var(--studio-page-text)]" />
                             </div>
                         </div>
                     </section>
@@ -546,7 +543,7 @@ export default function Modern({ invoice, user }: InvoiceProps) {
 
                 {/* Footer */}
                 <footer className="invoice-print-footer relative z-10 mt-5 shrink-0">
-                    <div className="rounded-full border-4 border-white bg-[var(--studio-total-bg)] px-6 py-2 text-center text-base font-black uppercase tracking-[0.45em] text-[var(--studio-total-text)]">
+                    <div className="rounded-full border-4 border-white bg-[var(--studio-panel)] px-6 py-2 text-center text-base font-black uppercase tracking-[0.45em] text-[var(--studio-text)]">
                         {store?.store_name || "WEBFACTOR"}
                     </div>
                 </footer>
