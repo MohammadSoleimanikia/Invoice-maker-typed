@@ -507,14 +507,7 @@ export default function Modern({ invoice, user }: InvoiceProps) {
 
                         <div className="mt-auto flex items-end justify-between pt-5 text-[var(--studio-page-text)]">
                             <div className="flex max-w-[92mm] flex-col items-center">
-                                <p className="mb-2 text-sm font-black">
-                                    شرایط و توضیحات
-                                </p>
-
-                                <p className="line-clamp-4 text-[10px] leading-5 text-[var(--studio-page-text)]/80">
-                                    {invoice.descriptions ||
-                                        "این فاکتور به‌صورت الکترونیکی صادر شده است. لطفاً اطلاعات کالا، مبلغ و مشخصات پرداخت را پیش از تسویه بررسی کنید."}
-                                </p>
+                                
                             </div>
 
                             <div className="text-center">
