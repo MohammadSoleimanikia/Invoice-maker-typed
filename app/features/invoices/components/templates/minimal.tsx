@@ -1,4 +1,4 @@
-import {  MapPinHouse, PhoneCall } from "lucide-react";
+import { MapPinHouse, PhoneCall } from "lucide-react";
 
 import type { User } from "@/features/auth/types/user.type";
 import type { InvoiceViewModel } from "@/features/invoices/types/invoicePreview.type";
@@ -16,6 +16,8 @@ import {
     TooltipTrigger,
 } from "@/features/shared/components/ui/tooltip";
 import { buildLogoUrl, phoneFormatter } from "@/features/shared/lib/utils";
+
+import Instagram from "../../../shared/components/instagramIcon";
 type invoiceProps = {
     invoice: InvoiceViewModel;
     user: User | null;
@@ -198,7 +200,7 @@ export default function Minimal({ invoice, user }: invoiceProps) {
             <footer className="mt-auto border-t-2 border-slate-300 text-sm pt-2 flex gap-5 justify-around">
                 {displayUser?.profile?.insta_link && (
                     <div className="flex gap-2 items-center">
-                        <img src={"/instagram.svg"} className="w-7 h-7" />
+                        <Instagram />
                         {displayUser.profile.insta_link}
                     </div>
                 )}

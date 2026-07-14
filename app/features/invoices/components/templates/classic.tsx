@@ -1,4 +1,4 @@
-import {  MapPinHouse, PhoneCall } from "lucide-react";
+import { MapPinHouse, PhoneCall } from "lucide-react";
 
 import type { User } from "@/features/auth/types/user.type";
 import type { InvoiceViewModel } from "@/features/invoices/types/invoicePreview.type";
@@ -20,6 +20,8 @@ type invoiceProps = {
     user: User | null;
 };
 import { useProfile } from "@/features/profile/hooks/useProfile";
+
+import Instagram from "../../../shared/components/instagramIcon";
 export default function Classic({ invoice, user }: invoiceProps) {
     const { data: profile } = useProfile();
     // Use passed user for public invoices, fallback to authenticated user profile
@@ -195,7 +197,7 @@ export default function Classic({ invoice, user }: invoiceProps) {
             <footer className="mt-auto border-t-2 border-slate-300 text-sm pt-2 flex gap-5 justify-around">
                 {displayUser?.profile.insta_link && (
                     <div className="flex gap-2 items-center">
-                        <img src={"/instagram.svg"} className="w-7 h-7" />
+                        <Instagram />
                         {displayUser.profile.insta_link}
                     </div>
                 )}
