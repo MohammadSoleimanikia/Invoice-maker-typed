@@ -1,20 +1,17 @@
-import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router";
+import { Navigate, Outlet } from "react-router";
 
-import useAuth from "@/features/auth/store/authStore";
+import { useUser } from "@/features/auth/hooks/useUser";
+import LoadingSpinner from "@/features/shared/components/ui/loadingSpinner";
 
 export default function Protected() {
-    const token = useAuth((state) => state.token);
-    const navigate = useNavigate();
+    const { user, isLoading, isError } = useUser();
 
-    useEffect(() => {
-        if (!token) {
-            navigate("/login", { replace: true });
-        }
-    }, [token, navigate]);
+    if (isLoading) {
+        return <LoadingSpinner />;
+    }
 
-    if (!token) {
-        return null; // or a loading spinner
+    if (isError || !user) {
+        return <Navigate to="/login" replace />;
     }
 
     return <Outlet />;

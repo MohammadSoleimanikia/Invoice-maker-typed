@@ -1,4 +1,3 @@
-// features/home/components/header.tsx
 import { Link, NavLink } from "react-router";
 
 import useAuth from "@/features/auth/store/authStore";
@@ -6,13 +5,11 @@ import ThemeToggler from "@/features/home/components/themeToggler";
 import { Button } from "@/features/shared/components/ui/button";
 
 export function Header() {
-    const token = useAuth((state) => state.token);
-    const isLoggedIn = !!token;
+    const isLoggedIn = useAuth((state) => state.isAuthenticated);
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                {/* موبایل: دو ردیف */}
                 <div className="flex flex-col sm:hidden py-2 gap-2">
                     <div className="flex justify-between items-center">
                         <Link to="/" className="flex items-center gap-2">
@@ -27,6 +24,7 @@ export function Header() {
                         </Link>
                         <ThemeToggler />
                     </div>
+
                     <div className="flex gap-2">
                         {!isLoggedIn && (
                             <Link to="/demo" className="flex-1">
@@ -39,6 +37,7 @@ export function Header() {
                                 </Button>
                             </Link>
                         )}
+
                         <NavLink
                             to={isLoggedIn ? "/dashboard" : "/login"}
                             className="flex-1"
@@ -50,7 +49,6 @@ export function Header() {
                     </div>
                 </div>
 
-                {/* دسکتاپ: یک ردیف */}
                 <div className="hidden sm:flex justify-between items-center h-16">
                     <Link to="/" className="flex items-center gap-2">
                         <img
@@ -62,8 +60,10 @@ export function Header() {
                             وب فاکتور
                         </span>
                     </Link>
+
                     <div className="flex items-center gap-3">
                         <ThemeToggler />
+
                         {!isLoggedIn && (
                             <Link to="/demo">
                                 <Button variant="outline" size="sm">
@@ -71,6 +71,7 @@ export function Header() {
                                 </Button>
                             </Link>
                         )}
+
                         <NavLink to={isLoggedIn ? "/dashboard" : "/login"}>
                             <Button size="sm">
                                 {isLoggedIn ? "داشبورد" : "ورود/عضویت"}

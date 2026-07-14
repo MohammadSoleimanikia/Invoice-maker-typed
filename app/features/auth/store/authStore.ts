@@ -1,27 +1,21 @@
-// features/auth/store/authStore.ts
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
-import type { AuthContextType } from "@/features/auth/types/authContext";
-import type { Token } from "@/features/auth/types/token";
+type AuthState = {
+    isAuthenticated: boolean;
+    logIn: () => void;
+    logOut: () => void;
+};
 
-const useAuth = create<AuthContextType>()(
-    persist(
-        (set) => ({
-            token: null,
+const useAuth = create<AuthState>((set) => ({
+    isAuthenticated: false,
 
-            logIn: (token: Token) => {
-                set({ token });
-            },
+    logIn: () => {
+        set({ isAuthenticated: true });
+    },
 
-            logOut: () => {
-                set({ token: null });
-            },
-        }),
-        {
-            name: "auth",
-        },
-    ),
-);
+    logOut: () => {
+        set({ isAuthenticated: false });
+    },
+}));
 
 export default useAuth;
