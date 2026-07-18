@@ -2,11 +2,10 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { Link, NavLink } from "react-router";
 
-import { useTheme } from "@/features/shared/components/themeProvider";
 import { Button } from "@/features/shared/components/ui/button";
 
+import { InvoiceChatPreview } from "./invoiceChatPreview";
 export function Hero() {
-    const { theme } = useTheme();
     const targetRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: targetRef,
@@ -88,15 +87,7 @@ export function Hero() {
                             className="relative"
                         >
                             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-2xl blur-3xl" />
-                            <img
-                                src={
-                                    theme === "dark"
-                                        ? "/hero/dark.webp"
-                                        : "/hero/light.webp"
-                                }
-                                alt="Dashboard preview"
-                                className="relative rounded-xl shadow-2xl ring-1 ring-gray-900/10 dark:ring-white/10 w-full"
-                            />
+                            <InvoiceChatPreview />
                         </motion.div>
                     </div>
                 </div>
