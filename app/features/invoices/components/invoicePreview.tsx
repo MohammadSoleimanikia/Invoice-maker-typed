@@ -18,7 +18,10 @@ export default function InvoicePreview({
     invoice,
     user,
 }: InvoicePreviewProps) {
-    const viewModel = buildInvoiceViewModel({ invoice });
+    const viewModel = buildInvoiceViewModel({
+        invoice,
+        paymentDescription: user?.profile?.payment_description,
+    });
     return (
         <div
             className="

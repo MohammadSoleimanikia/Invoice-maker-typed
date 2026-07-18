@@ -12,8 +12,13 @@ import { phoneFormatter } from "../../shared/lib/utils";
 
 type InvoiceViewModelProps = {
     invoice: Invoice;
+    paymentDescription?: string | null;
 };
-export function buildInvoiceViewModel({ invoice }: InvoiceViewModelProps) {
+
+export function buildInvoiceViewModel({
+    invoice,
+    paymentDescription,
+}: InvoiceViewModelProps) {
     return {
         invoiceNumber: invoice.invoice_number,
         createdAt: formatPersianDateTime(invoice.created),
@@ -34,7 +39,8 @@ export function buildInvoiceViewModel({ invoice }: InvoiceViewModelProps) {
         added_value: invoice.added_value,
         discount: invoice.discount,
         total: invoice.total_amount ?? 0,
-        descriptions: invoice.descriptions,
+        descriptions:
+            invoice.descriptions?.trim() || paymentDescription?.trim() || "",
         title: invoice.title,
         totalText: invoice.total_amount
             ? num2persian(invoice.total_amount)
