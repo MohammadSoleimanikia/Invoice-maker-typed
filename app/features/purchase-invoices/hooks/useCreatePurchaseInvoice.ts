@@ -19,9 +19,19 @@ export function useCreatePurchaseInvoice() {
                 body: JSON.stringify(data),
             });
         },
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({
+        onSuccess: () => {
+            queryClient.invalidateQueries({
                 queryKey: ["purchase-invoices"],
+            });
+
+            // بروزرسانی لیست و موجودی محصولات
+            queryClient.invalidateQueries({
+                queryKey: ["products"],
+            });
+
+            // بروزرسانی batchهای FIFO
+            queryClient.invalidateQueries({
+                queryKey: ["product-batches"],
             });
 
             toast.success("فاکتور خرید با موفقیت ایجاد شد");

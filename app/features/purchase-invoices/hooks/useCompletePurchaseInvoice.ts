@@ -24,6 +24,10 @@ export function useCompletePurchaseInvoice() {
                 queryClient.invalidateQueries({
                     queryKey: ["products"],
                 }),
+                queryClient.invalidateQueries({ queryKey: ["products"] }),
+                queryClient.invalidateQueries({
+                    queryKey: ["product-batches"],
+                }),
             ]);
 
             toast.success("فاکتور خرید با موفقیت تکمیل شد");
