@@ -108,7 +108,7 @@ export default function ProductTable({
                         <TableHead>دسته‌بندی</TableHead>{" "}
                         {/* ✅ جایگزین توضیحات */}
                         <TableHead>قیمت فروش</TableHead>
-                        <TableHead>قیمت خرید</TableHead>
+                        <TableHead>آخرین قیمت خرید</TableHead>
                         <TableHead>عملیات</TableHead>
                     </TableRow>
                 </TableHeader>

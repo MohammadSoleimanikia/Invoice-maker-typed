@@ -13,6 +13,7 @@ export function useLogout() {
         mutationFn: async () => {
             return apiFetch("/account/logout/", {
                 method: "POST",
+                credentials: "include",
             });
         },
 
