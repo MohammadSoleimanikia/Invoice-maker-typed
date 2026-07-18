@@ -26,6 +26,7 @@ import {
     PaginationPrevious,
 } from "../../shared/components/ui/pagination";
 import EditProductModal from "./editProductModal";
+import ProductBatchesDialog from "./ProductBatchesDialog";
 import { ProductTableEmptyState } from "./ProductTableEmptyState";
 
 interface ProductTableProps {
@@ -147,13 +148,20 @@ export default function ProductTable({
                                     "-"}{" "}
                                 تومان
                             </TableCell>
-                            <TableCell className="space-x-2">
-                                <DeleteConfirm
-                                    title="کالا"
-                                    onConfirm={() => handleDelete(product.id)}
-                                    disabled={isDeleting}
-                                />
-                                <EditProductModal product={product} />
+                            <TableCell>
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <ProductBatchesDialog product={product} />
+
+                                    <EditProductModal product={product} />
+
+                                    <DeleteConfirm
+                                        title="کالا"
+                                        onConfirm={() =>
+                                            handleDelete(product.id)
+                                        }
+                                        disabled={isDeleting}
+                                    />
+                                </div>
                             </TableCell>
                         </TableRow>
                     ))}
