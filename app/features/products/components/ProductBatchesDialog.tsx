@@ -68,7 +68,7 @@ export default function ProductBatchesDialog({ product }: Props) {
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="max-w-4xl">
+            <DialogContent className="w-[96vw] max-w-[96vw] sm:max-w-[96vw] xl:max-w-[1400px]">
                 <DialogHeader>
                     <DialogTitle>موجودی خریدهای {product.name}</DialogTitle>
 
