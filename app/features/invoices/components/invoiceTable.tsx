@@ -62,7 +62,7 @@ export default function InvoiceTable({
     const handleResetFilters = () => {
         // اینجا باید فیلترها را ریست کنید
         // از طریق props به parent کامپوننت
-        window.location.reload(); // یا روش بهتر: فراخوانی تابع ریست از parent
+        window.location.reload(); 
     };
 
     const handleDelete = async (
@@ -148,6 +148,7 @@ export default function InvoiceTable({
                         <TableHead>شماره فاکتور</TableHead>
                         <TableHead>نام مشتری</TableHead>
                         <TableHead>تاریخ ایجاد</TableHead>
+                        <TableHead>مبلغ کل</TableHead>
                         <TableHead>وضعیت</TableHead>
                         <TableHead>عملیات</TableHead>
                     </TableRow>
@@ -167,6 +168,10 @@ export default function InvoiceTable({
                             
                             <TableCell>
                                 {invoice.created.split(" ")[0]}
+                            </TableCell>
+                            <TableCell>
+                                {invoice.total_amount.toLocaleString("fa-IR")}{" "}
+                                تومان
                             </TableCell>
                              <TableCell className="text-right">
                                 {invoice.status ? (
