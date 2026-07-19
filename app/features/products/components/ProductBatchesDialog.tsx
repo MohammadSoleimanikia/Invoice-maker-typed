@@ -23,7 +23,7 @@ import {
 import { apiFetch } from "@/features/shared/lib/api";
 
 type InventoryBatch = {
-    invoice_number: string;
+    invoice_number: string | null;
     product: number;
     quantity_received: number;
     quantity_remaining: number;
@@ -108,8 +108,8 @@ export default function ProductBatchesDialog({ product }: Props) {
 
                 {!isLoading && !isError && batches.length > 0 && (
                     <>
-                        <div className="max-h-[55vh] overflow-auto rounded-md border">
-                            <Table>
+                        <div className="max-h-[70vh] w-full overflow-auto rounded-md border">
+                            <Table className="w-full min-w-[1000px]">
                                 <TableHeader className="sticky top-0 bg-muted">
                                     <TableRow>
                                         <TableHead>اولویت FIFO</TableHead>
