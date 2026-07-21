@@ -9,18 +9,94 @@ import { SalesWorkflow } from "@/features/home/components/salesWorkflow";
 import { TemplateShowcase } from "@/features/home/components/templateShowcase";
 import { PlansList } from "@/features/subscription/components/PlansList";
 
-// Main Home Component
+const SITE_URL = "https://webfactor.ir";
+
+const TITLE = "ساخت فاکتور آنلاین رایگان و حرفه‌ای | وب فاکتور";
+
+const DESCRIPTION =
+    "با وب فاکتور، فاکتور فروش حرفه‌ای بسازید، چاپ کنید و برای مشتری ارسال کنید. مناسب فروشگاه‌ها، شرکت‌ها و کسب‌وکارهای آنلاین.";
+
 export function meta() {
     return [
-        { title: "وب فاکتور | سامانه حرفه‌ای صدور فاکتور آنلاین" },
+        { title: TITLE },
+
         {
             name: "description",
-            content:
-                "ساخت، مدیریت و ارسال فاکتور حرفه‌ای با وب فاکتور. مناسب فروشگاه‌ها، شرکت‌ها و کسب‌وکارهای آنلاین",
+            content: DESCRIPTION,
+        },
+
+        {
+            name: "robots",
+            content: "index, follow, max-image-preview:large",
+        },
+
+        {
+            name: "googlebot",
+            content: "index, follow, max-image-preview:large",
+        },
+
+        {
+            property: "og:type",
+            content: "website",
         },
         {
-            name: "keywords",
-            content: "فاکتور, ساخت فاکتور, مدیریت فروش, صدور فاکتور آنلاین",
+            property: "og:locale",
+            content: "fa_IR",
+        },
+        {
+            property: "og:site_name",
+            content: "وب فاکتور",
+        },
+        {
+            property: "og:title",
+            content: TITLE,
+        },
+        {
+            property: "og:description",
+            content: DESCRIPTION,
+        },
+        {
+            property: "og:url",
+            content: SITE_URL,
+        },
+        {
+            property: "og:image",
+            content: `${SITE_URL}/image-og.webp`,
+        },
+        {
+            property: "og:image:alt",
+            content: "سامانه ساخت فاکتور آنلاین وب فاکتور",
+        },
+
+        {
+            name: "twitter:card",
+            content: "summary_large_image",
+        },
+        {
+            name: "twitter:title",
+            content: TITLE,
+        },
+        {
+            name: "twitter:description",
+            content: DESCRIPTION,
+        },
+        {
+            name: "twitter:image",
+            content: `${SITE_URL}/image-og.webp`,
+        },
+
+        {
+            name: "theme-color",
+            content: "#2a8e9e",
+        },
+    ];
+}
+
+export function links() {
+    return [
+        {
+            rel: "canonical",
+            href: `${SITE_URL}/`,
         },
     ];
 }
@@ -32,25 +108,30 @@ export default function Home() {
             <Hero />
             <Features />
             <TemplateShowcase />
-            <section className="py-16 bg-muted/30">
+
+            <section className="bg-muted/30 py-16">
                 <div className="container mx-auto px-4">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold mb-4">
-                            تعرفه‌های وب‌فاکتور
+                    <div className="mb-12 text-center">
+                        <h2 className="mb-4 text-3xl font-bold">
+                            تعرفه‌های وب فاکتور
                         </h2>
-                        <p className="text-muted-foreground max-w-2xl mx-auto">
+
+                        <p className="mx-auto max-w-2xl text-muted-foreground">
                             پلن مناسب کسب‌وکار خود را انتخاب کنید و از امکانات
-                            حرفه‌ای لذت ببرید
+                            حرفه‌ای صدور و مدیریت فاکتور بهره‌مند شوید.
                         </p>
                     </div>
+
                     <PlansList />
-                    <div className="text-center mt-8">
+
+                    <div className="mt-8 text-center">
                         <p className="text-sm text-muted-foreground">
-                            برای اطلاعات بیشتر با ما تماس بگیرید
+                            برای اطلاعات بیشتر با ما تماس بگیرید.
                         </p>
                     </div>
                 </div>
             </section>
+
             <SalesWorkflow />
             <CTA />
             <Footer />
