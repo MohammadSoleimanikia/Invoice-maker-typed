@@ -20,7 +20,7 @@ export function useEditProfile(profile: User, onSuccess?: () => void) {
             hexcolor: profile.profile.hexcolor,
             payment_description: profile.profile.payment_description,
             default_invoice_template:
-                profile.profile.default_invoice_template,
+                profile.profile.default_invoice_template ?? "boutique",
         },
     });
 

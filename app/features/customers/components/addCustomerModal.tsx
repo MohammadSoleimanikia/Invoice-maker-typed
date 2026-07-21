@@ -172,7 +172,7 @@ export default function AddCustomerModal({
                         className="w-full"
                     >
                         {isPending ? (
-                            <LoadingSpinner text="در حال ارسال..." />
+                            <LoadingSpinner />
                         ) : (
                             "افزودن مشتری"
                         )}
