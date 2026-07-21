@@ -8,14 +8,17 @@ import {
 export default [
     index("routes/home.tsx"),
 
-    route("public/:invoiceToken", "routes/invoices/publicInvoice.tsx"),
+    route("i/:invoiceToken", "routes/invoices/publicInvoice.tsx"),
 
     route("payment/result", "routes/payment/result.tsx"),
 
+    // The local demo must stay outside GuestOnly because GuestOnly calls
+    // /account/profile/ to determine authentication state.
+    route("demo", "routes/demoInvoice.tsx"),
+    route("demo-invoice/preview", "routes/demoInvoicePreview.tsx"),
+
     layout("routes/guestOnly.tsx", [
         route("login", "routes/logIn.tsx"),
-        route("demo", "routes/demoInvoice.tsx"),
-        route("demo-invoice/preview", "routes/demoInvoicePreview.tsx"),
     ]),
 
     layout("routes/dashboard/protected.tsx", [
@@ -40,7 +43,6 @@ export default [
 
             route("categories", "routes/categories.tsx"),
 
-            // Purchase Invoice routes
             route("purchase-invoices", "routes/purchaseInvoices.tsx"),
             route("purchase-invoices/new", "routes/purchaseInvoicesNew.tsx"),
             route(

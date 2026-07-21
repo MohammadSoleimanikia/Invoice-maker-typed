@@ -1,6 +1,6 @@
 // features/invoices/components/SharePublicLinkDialog.tsx
 import { Copy, Share2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/features/shared/components/ui/button";
@@ -36,13 +36,15 @@ export default function SharePublicLinkDialog({
     showLabel = false,
 }: SharePublicLinkDialogProps) {
     const [open, setOpen] = useState(false);
-    const [publicUrl, setPublicUrl] = useState("");
 
-    useEffect(() => {
-        if (!invoiceToken) return;
+    const publicUrl = useMemo(() => {
+        if (!invoiceToken) return "";
 
-        const origin = window.location.origin;
-        setPublicUrl(`${origin}/public/${invoiceToken}`);
+        const publicSiteUrl = (
+            import.meta.env.VITE_PUBLIC_SITE_URL || "https://webfactor.ir"
+        ).replace(/\/+$/, "");
+
+        return `${publicSiteUrl}/i/${encodeURIComponent(invoiceToken)}`;
     }, [invoiceToken]);
 
     const handleCopy = async () => {
