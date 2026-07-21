@@ -1,3 +1,5 @@
+import type { TemplateType } from "@/features/invoices/types/template";
+
 export type User = {
     id: number;
     first_name: string;
@@ -5,6 +7,11 @@ export type User = {
     phone_number: string;
     date_joined: string;
     profile: {
+        /**
+         * Older accounts may not have selected a template yet.
+         * All consumers must normalize this value to boutique.
+         */
+        default_invoice_template?: TemplateType | null;
         store_name: string | null;
         store_description: string | null;
         store_address: string | null;
@@ -23,10 +30,10 @@ export type UserCreate = {
     store_address: string;
     insta_link: string;
 };
+
 export type UserUpdate = {
     first_name?: string;
     last_name?: string;
-
     store_name?: string | null;
     store_description?: string | null;
     store_address?: string | null;
@@ -34,4 +41,5 @@ export type UserUpdate = {
     hexcolor?: string;
     logo?: File | string;
     payment_description?: string | null;
+    default_invoice_template?: TemplateType;
 };

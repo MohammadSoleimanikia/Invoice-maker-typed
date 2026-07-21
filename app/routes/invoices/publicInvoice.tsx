@@ -3,13 +3,16 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 import type { User } from "@/features/auth/types/user.type";
-import Boutique from "@/features/invoices/components/templates/boutique";
-import { buildInvoiceViewModel } from "@/features/invoices/libs/invoiceViewModel";
+import InvoicePreview from "@/features/invoices/components/invoicePreview";
 import type { PublicInvoice } from "@/features/invoices/types/invoice";
 import type { Invoice } from "@/features/invoices/types/invoicePreview.type";
+import {
+    DEFAULT_INVOICE_TEMPLATE,
+    normalizeInvoiceTemplate,
+    type TemplateType,
+} from "@/features/invoices/types/template";
 import { useTheme } from "@/features/shared/components/themeProvider";
 import { Button } from "@/features/shared/components/ui/button";
-import Zoomable from "@/features/shared/components/zoomable";
 import { apiFetch } from "@/features/shared/lib/api";
 
 export default function PublicInvoice() {
@@ -17,6 +20,9 @@ export default function PublicInvoice() {
     const { theme, setTheme } = useTheme();
     const [invoice, setInvoice] = useState<Invoice | null>(null);
     const [user, setUser] = useState<User | null>(null);
+    const [template, setTemplate] = useState<TemplateType>(
+        DEFAULT_INVOICE_TEMPLATE,
+    );
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -49,7 +55,13 @@ export default function PublicInvoice() {
                         invoiceData.descriptions ||
                         response.payment_description ||
                         "",
-                } as any);
+                });
+
+                // The public API returns the store owner's selected template.
+                // Older/missing/invalid values are normalized to boutique.
+                const selectedTemplate = normalizeInvoiceTemplate(
+                    response.template,
+                );
 
                 // Build user/creator object from seller info at top level
                 const sellerInfo: User = {
@@ -59,6 +71,7 @@ export default function PublicInvoice() {
                     last_name: response.creator?.split(" ")[1] || "",
                     date_joined: response.created_at,
                     profile: {
+                        default_invoice_template: selectedTemplate,
                         store_name: response.creator || "فروشگاه",
                         store_description: response.store_description || "",
                         store_address: response.store_address || "",
@@ -71,6 +84,7 @@ export default function PublicInvoice() {
                 };
 
                 setUser(sellerInfo);
+                setTemplate(selectedTemplate);
             } catch (err: any) {
                 console.error("Error fetching invoice:", err);
                 setError(err?.message || "خطا در بارگذاری فاکتور");
@@ -112,8 +126,6 @@ export default function PublicInvoice() {
         );
     }
 
-    const viewModel = buildInvoiceViewModel({ invoice });
-
     return (
         <>
             <div className="my-4 mx-2 md:mx-5 flex gap-4 print:hidden items-center justify-between">
@@ -147,21 +159,11 @@ export default function PublicInvoice() {
                     </Button>
                 </div>
             </div>
-            <div
-                className="
-                                    relative
-                                    w-full min-h-screen
-                                    overflow-hidden
-                                    bg-muted p-5
-                                    flex justify-center items-start
-                                    dark:bg-muted-foreground
-                                    print:text-black print:bg-white print:p-0 print:m-0 print:overflow-visible
-                                "
-            >
-                <Zoomable>
-                    <Boutique invoice={viewModel} user={user} />
-                </Zoomable>
-            </div>
+            <InvoicePreview
+                invoice={invoice}
+                user={user}
+                template={template}
+            />
         </>
     );
 }

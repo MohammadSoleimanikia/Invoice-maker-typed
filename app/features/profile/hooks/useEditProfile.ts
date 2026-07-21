@@ -19,6 +19,8 @@ export function useEditProfile(profile: User, onSuccess?: () => void) {
             insta_link: profile.profile.insta_link,
             hexcolor: profile.profile.hexcolor,
             payment_description: profile.profile.payment_description,
+            default_invoice_template:
+                profile.profile.default_invoice_template,
         },
     });
 
@@ -51,6 +53,12 @@ export function useEditProfile(profile: User, onSuccess?: () => void) {
                     data.payment_description,
                 );
             }
+            if (data.default_invoice_template !== undefined) {
+                formData.append(
+                    "default_invoice_template",
+                    data.default_invoice_template,
+                );
+            }
             if (logoFile !== null) formData.append("logo", logoFile);
 
             return apiFetch("/account/profile/", {
@@ -61,6 +69,7 @@ export function useEditProfile(profile: User, onSuccess?: () => void) {
         onSuccess: () => {
             toast.success("پروفایل با موفقیت ویرایش شد!");
             queryClient.invalidateQueries({ queryKey: ["profile"] });
+            queryClient.invalidateQueries({ queryKey: ["user"] });
             onSuccess?.();
         },
         onError: (err: any) => {

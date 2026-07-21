@@ -4,6 +4,11 @@ import { toast } from "sonner";
 
 import type { User } from "@/features/auth/types/user.type";
 import {
+    DEFAULT_INVOICE_TEMPLATE,
+    invoiceTemplateOptions,
+    isInvoiceTemplate,
+} from "@/features/invoices/types/template";
+import {
     Dialog,
     DialogContent,
     DialogHeader,
@@ -13,6 +18,13 @@ import {
 import { Button } from "../../shared/components/ui/button";
 import { Input } from "../../shared/components/ui/input";
 import { Label } from "../../shared/components/ui/label";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "../../shared/components/ui/select";
 import { Textarea } from "../../shared/components/ui/textarea";
 import { useEditProfile } from "../hooks/useEditProfile";
 
@@ -55,6 +67,9 @@ export default function EditProfileModal({
             insta_link: profile.profile.insta_link,
             hexcolor: profile.profile.hexcolor,
             payment_description: profile.profile.payment_description,
+            default_invoice_template:
+                profile.profile.default_invoice_template ||
+                DEFAULT_INVOICE_TEMPLATE,
         });
         setHexcolor(profile.profile.hexcolor || "#3b82f6");
         setLogoFile(null);
@@ -140,6 +155,44 @@ export default function EditProfileModal({
                             {errors.store_name?.message}
                         </p>
                     </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="default_invoice_template">
+                            قالب پیش‌فرض فاکتور
+                        </Label>
+                        <Select
+                            value={
+                                form.watch("default_invoice_template") ||
+                                DEFAULT_INVOICE_TEMPLATE
+                            }
+                            onValueChange={(value) => {
+                                if (!isInvoiceTemplate(value)) return;
+
+                                setValue("default_invoice_template", value, {
+                                    shouldDirty: true,
+                                    shouldValidate: true,
+                                });
+                            }}
+                        >
+                            <SelectTrigger id="default_invoice_template">
+                                <SelectValue placeholder="انتخاب قالب" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {invoiceTemplateOptions.map((option) => (
+                                    <SelectItem
+                                        key={option.value}
+                                        value={option.value}
+                                    >
+                                        {option.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">
+                            فاکتورها و لینک عمومی به‌صورت پیش‌فرض با این قالب
+                            نمایش داده می‌شوند.
+                        </p>
+                    </div>
+
                     <div className="space-y-2 col-span-2">
                         <Label htmlFor="payment_description">
                             توضیحات پرداخت فاکتور

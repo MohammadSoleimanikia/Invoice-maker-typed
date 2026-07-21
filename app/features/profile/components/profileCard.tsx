@@ -3,6 +3,7 @@ import {
     CreditCard,
     Edit,
     Instagram,
+    LayoutTemplate,
     MapPin,
     Package,
     Phone,
@@ -11,6 +12,10 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
+import {
+    invoiceTemplateFa,
+    normalizeInvoiceTemplate,
+} from "@/features/invoices/types/template";
 import { useProfile } from "@/features/profile/hooks/useProfile";
 import { Button } from "@/features/shared/components/ui/button";
 import {
@@ -129,6 +134,18 @@ export default function ProfileCard() {
                                 value={
                                     profile.profile.payment_description ||
                                     "ثبت نشده"
+                                }
+                            />
+                            <InfoRow
+                                icon={LayoutTemplate}
+                                label="قالب پیش‌فرض فاکتور"
+                                value={
+                                    invoiceTemplateFa[
+                                        normalizeInvoiceTemplate(
+                                            profile.profile
+                                                .default_invoice_template,
+                                        )
+                                    ]
                                 }
                             />
                             <InfoRow

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 import { useUser } from "@/features/auth/hooks/useUser";
@@ -6,7 +6,11 @@ import InvoicePreview from "@/features/invoices/components/invoicePreview";
 import SharePublicLinkDialog from "@/features/invoices/components/sharePublicLinkDialog";
 import { TemplateSelector } from "@/features/invoices/components/templateSelector";
 import { useInvoice } from "@/features/invoices/hooks/useInvoice";
-import type { TemplateType } from "@/features/invoices/types/invoicePreview.type";
+import {
+    DEFAULT_INVOICE_TEMPLATE,
+    normalizeInvoiceTemplate,
+    type TemplateType,
+} from "@/features/invoices/types/template";
 import { Button } from "@/features/shared/components/ui/button";
 import LoadingSpinner from "@/features/shared/components/ui/loadingSpinner";
 export default function Invoice() {
@@ -19,7 +23,17 @@ export default function Invoice() {
     } = useInvoice(id as string);
     const { user, isLoading: isUserLoading } = useUser();
 
-    const [template, setTemplate] = useState<TemplateType>("boutique");
+    const [template, setTemplate] = useState<TemplateType>(
+        DEFAULT_INVOICE_TEMPLATE,
+    );
+
+    useEffect(() => {
+        setTemplate(
+            normalizeInvoiceTemplate(
+                user?.profile.default_invoice_template,
+            ),
+        );
+    }, [user?.profile.default_invoice_template]);
     if (isInvoiceLoading || isUserLoading) return <LoadingSpinner />;
     if (isInvoiceError) {
         return (
