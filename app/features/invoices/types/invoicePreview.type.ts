@@ -1,17 +1,29 @@
 import type { User } from "@/features/auth/types/user.type";
-import type { Product } from "@/features/products/types/product";
+
+export type TemplateType = "classic" | "modern" | "minimal" | "boutique";
 
 /**
- * Private Invoice Item with full Product details
+ * The templates only need a small subset of the product object.
+ * API products with extra fields remain structurally compatible, while
+ * locally-created demo products no longer need unsafe `as any` casts.
+ */
+export type InvoiceItemProduct = {
+    id: number;
+    name: string;
+    price?: number;
+};
+
+/**
+ * Private Invoice Item with the fields required by the invoice templates.
  */
 export type InvoiceItem = {
-    product: Product;
+    product: InvoiceItemProduct;
     price: number;
     quantity: number;
 };
+
 /**
- * Private Invoice preview- used for authenticated users
- *
+ * Private invoice preview, used by authenticated and local demo invoices.
  */
 export type Invoice = {
     id: string;
@@ -35,8 +47,7 @@ export type Invoice = {
 };
 
 /**
- * returned Data type
- * Returned from /user/invoices/
+ * Returned data type from /user/invoices/.
  */
 export type PaginatedInvoiceList = {
     count: number;
@@ -44,6 +55,7 @@ export type PaginatedInvoiceList = {
     previous?: string | null;
     results: Invoice[];
 };
+
 export type InvoiceViewModel = {
     invoiceNumber: string;
     createdAt: string;

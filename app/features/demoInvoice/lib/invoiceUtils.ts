@@ -1,100 +1,88 @@
-/**
- * Utility functions for invoice operations
- * Centralizes business logic to follow DRY principles
- */
-
 import type {
+    DemoInvoiceFormItem,
     DemoInvoiceFormType,
     DemoInvoiceItem,
 } from "@/features/demoInvoice/types/demoInvoice";
-import {
-    InvoiceStatus,
-    PaymentMode,
-} from "@/features/invoices/constants/invoice";
 
-/**
- * Calculate total amount from invoice items
- * @param items - Array of invoice items
- * @returns Total amount
- */
-export const calculateInvoiceTotal = (
+export const calculateItemsSubtotal = (
     items: Array<{ price: number; quantity: number }>,
 ): number => {
-    return items.reduce(
-        (sum, item) => sum + (item.price || 0) * (item.quantity || 1),
-        0,
-    );
+    return items.reduce((sum, item) => {
+        const price = Number(item.price) || 0;
+        const quantity = Number(item.quantity) || 0;
+        return sum + price * quantity;
+    }, 0);
 };
 
 /**
- * Transform form data items into invoice items
- * @param items - Form items
- * @returns Transformed invoice items
+ * Mirrors the payable amount used by dashboard invoices.
  */
+export const calculateInvoiceTotal = (
+    items: Array<{ price: number; quantity: number }>,
+    addedValue = 0,
+    discount = 0,
+): number => {
+    const subtotal = calculateItemsSubtotal(items);
+    return Math.max(0, subtotal + Number(addedValue || 0) - Number(discount || 0));
+};
+
 export const transformFormItemsToInvoiceItems = (
-    items: Array<{ product_name: string; quantity: number; price: number }>,
+    items: DemoInvoiceFormItem[],
 ): DemoInvoiceItem[] => {
     return items
         .filter((item) => item.product_name.trim())
         .map((item, index) => ({
-            id: index,
-            product: { id: index, name: item.product_name },
-            quantity: item.quantity || 1,
-            price: item.price || 0,
+            product: {
+                id: index + 1,
+                name: item.product_name.trim(),
+                price: Number(item.price) || 0,
+            },
+            quantity: Number(item.quantity) || 1,
+            price: Number(item.price) || 0,
         }));
 };
 
-/**
- * Get today's date in YYYY-MM-DD format
- * @returns Today's date string
- */
 export const getTodayDateString = (): string => {
-    return new Date().toISOString().split("T")[0];
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
 };
 
-/**
- * Get current timestamp in ISO format
- * @returns ISO timestamp
- */
-export const getCurrentTimestamp = (): string => {
-    return new Date().toISOString();
-};
+export const generateInvoiceId = (): string => `demo-${Date.now()}`;
 
-/**
- * Generate unique invoice ID
- * @returns Unique ID
- */
-export const generateInvoiceId = (): string => {
-    return `demo-${Date.now()}`;
-};
-
-/**
- * Get default form values for new invoice
- * @returns Default form values
- */
 export const getDefaultInvoiceFormValues = (): DemoInvoiceFormType => ({
-    invoice_number: "",
+    title: "فاکتور فروش",
+    invoice_number: String(Date.now()).slice(-6),
     created: getTodayDateString(),
+
+    seller_store_name: "",
+    seller_store_description: "",
+    seller_phone_number: "",
+    seller_store_address: "",
+    seller_insta_link: "",
+    seller_hexcolor: "#2a8e9e",
+    seller_logo: "",
+
     customer_name: "",
     customer_address: "",
     customer_email: "",
     customer_phone_number: "",
-    descriptions: "",
-    status: InvoiceStatus.PENDING,
-    payment_mode: PaymentMode.CASH,
-    items: [{ product_name: "", quantity: 1, price: 0 }],
 
-    added_value: 0, // ← اضافه شد
-    discount: 0, // ← اضافه شد
+    descriptions: "",
+    status: "pending",
+    payment_mode: "cash",
+    items: [{ product_name: "", quantity: 1, price: 0 }],
+    added_value: 0,
+    discount: 0,
 });
 
-/**
- * Validate invoice form data
- * @param items - Form items to validate
- * @returns True if valid, false otherwise
- */
-export const isInvoiceFormValid = (
-    items: Array<{ product_name: string }>,
-): boolean => {
-    return items.some((item) => item.product_name.trim());
+export const isInvoiceFormValid = (items: DemoInvoiceFormItem[]): boolean => {
+    return items.some(
+        (item) =>
+            item.product_name.trim().length > 0 &&
+            Number(item.quantity) > 0 &&
+            Number(item.price) >= 0,
+    );
 };

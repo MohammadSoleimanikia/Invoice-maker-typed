@@ -1,63 +1,62 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 import { useInvoiceStore } from "@/features/demoInvoice/store/demoInvoice";
-import { buildInvoiceViewModel } from "@/features/invoices/libs/invoiceViewModel";
-import { BUTTON_LABELS, MESSAGES } from "@/features/shared/constants/i18n";
+import InvoicePreview from "@/features/invoices/components/invoicePreview";
+import { TemplateSelector } from "@/features/invoices/components/templateSelector";
+import type { TemplateType } from "@/features/invoices/types/invoicePreview.type";
+import { Button } from "@/features/shared/components/ui/button";
 
-import Minimal from "../../invoices/components/templates/minimal";
-import { Button } from "../../shared/components/ui/button";
-import { FormActions } from "../../shared/components/ui/form-fields";
-
-/**
- * Demo invoice preview component
- * Displays invoice in minimal template with print and navigation options
- */
 export default function DemoInvoicePreview() {
     const navigate = useNavigate();
+    const [template, setTemplate] = useState<TemplateType>("boutique");
     const invoice = useInvoiceStore((state) => state.invoice);
+    const user = useInvoiceStore((state) => state.user);
 
-    if (!invoice) {
+    const handleNewInvoice = () => {
+        useInvoiceStore.getState().clearPreviewData();
+        navigate("/demo");
+    };
+
+    if (!invoice || !user) {
         return (
-            <div className="flex items-center justify-center h-screen">
-                <div className="text-center">
+            <div className="flex min-h-svh items-center justify-center p-6">
+                <div className="space-y-4 text-center">
                     <p className="text-lg text-muted-foreground">
-                        {MESSAGES.ERROR.NOT_FOUND}
+                        اطلاعات فاکتور دمو پیدا نشد.
                     </p>
+                    <Button onClick={() => navigate("/demo")}>
+                        ساخت فاکتور دمو
+                    </Button>
                 </div>
             </div>
         );
     }
 
-    const viewModel = buildInvoiceViewModel({ invoice: invoice as any });
-
-    /**
-     * Handle creating new invoice
-     * Clears store and navigates back to form
-     */
-    const handleNewInvoice = () => {
-        useInvoiceStore.getState().clearInvoice();
-        navigate("/demo");
-    };
-
     return (
         <>
-            <div className="mb-4 print:hidden px-4 py-2">
-                <FormActions>
-                    <Button onClick={() => window.print()}>
-                        {BUTTON_LABELS.PRINT}
-                    </Button>
-                    <Button variant="outline" onClick={() => navigate("/")}>
-                        {BUTTON_LABELS.BACK_TO_HOME}
-                    </Button>
-                    <Button variant="outline" onClick={handleNewInvoice}>
-                        {BUTTON_LABELS.NEW_INVOICE}
-                    </Button>
-                </FormActions>
+            <div className="flex flex-wrap items-center gap-3 p-4 print:hidden">
+                <TemplateSelector
+                    template={template}
+                    setTemplate={setTemplate}
+                />
+                <Button onClick={() => window.print()}>چاپ</Button>
+                <Button variant="outline" onClick={() => navigate("/demo")}>
+                    ویرایش اطلاعات
+                </Button>
+                <Button variant="outline" onClick={handleNewInvoice}>
+                    فاکتور جدید
+                </Button>
+                <Button variant="ghost" onClick={() => navigate("/")}>
+                    بازگشت به خانه
+                </Button>
             </div>
 
-            <div className="overflow-x-scroll bg-muted p-5 space-y-3 print:text-black print:bg-white print:p-0 print:m-0 print:overflow-visible">
-                <Minimal invoice={viewModel} user={null} />
-            </div>
+            <InvoicePreview
+                invoice={invoice}
+                user={user}
+                template={template}
+            />
         </>
     );
 }

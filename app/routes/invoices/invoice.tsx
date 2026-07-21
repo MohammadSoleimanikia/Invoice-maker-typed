@@ -6,10 +6,9 @@ import InvoicePreview from "@/features/invoices/components/invoicePreview";
 import SharePublicLinkDialog from "@/features/invoices/components/sharePublicLinkDialog";
 import { TemplateSelector } from "@/features/invoices/components/templateSelector";
 import { useInvoice } from "@/features/invoices/hooks/useInvoice";
-import type { Invoice } from "@/features/invoices/types/invoicePreview.type";
+import type { TemplateType } from "@/features/invoices/types/invoicePreview.type";
 import { Button } from "@/features/shared/components/ui/button";
 import LoadingSpinner from "@/features/shared/components/ui/loadingSpinner";
-export type TemplateType = "classic" | "modern" | "minimal" | "boutique";
 export default function Invoice() {
     const { id } = useParams<{ id: string }>();
     const {

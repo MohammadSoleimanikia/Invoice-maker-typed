@@ -24,7 +24,7 @@ type invoiceProps = {
 };
 
 export default function Minimal({ invoice, user }: invoiceProps) {
-    const { data: profile } = useProfile();
+    const { data: profile } = useProfile({ enabled: !user });
     // Use passed user prop for public invoices, fallback to authenticated user profile
     const displayUser = user || profile;
     const colors = displayUser

@@ -193,7 +193,7 @@ function createBrandPalette(hex?: string | null) {
 }
 
 export default function Modern({ invoice, user }: InvoiceProps) {
-    const { data: profile } = useProfile();
+    const { data: profile } = useProfile({ enabled: !user });
 
     const displayUser = user || profile;
     const store = displayUser?.profile;

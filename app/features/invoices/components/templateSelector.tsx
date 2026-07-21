@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
+import type { TemplateType } from "@/features/invoices/types/invoicePreview.type";
 import {
     Select,
     SelectContent,
@@ -7,15 +8,12 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/features/shared/components/ui/select";
-import type { TemplateType } from "@/routes/invoices/invoice";
 
 type TemplateSelectorProps = {
-    template: "classic" | "modern" | "minimal" | "boutique";
+    template: TemplateType;
     setTemplate: Dispatch<SetStateAction<TemplateType>>;
 };
-/**
- * a dropdown selector for selecting the template type
- */
+
 export const TemplateSelector = ({
     template,
     setTemplate,
@@ -23,7 +21,7 @@ export const TemplateSelector = ({
     return (
         <Select
             value={template}
-            onValueChange={(value: string) => {
+            onValueChange={(value) => {
                 if (
                     value === "classic" ||
                     value === "modern" ||
@@ -35,7 +33,7 @@ export const TemplateSelector = ({
             }}
         >
             <SelectTrigger className="w-fit bg-white">
-                <SelectValue placeholder="Template" />
+                <SelectValue placeholder="قالب" />
             </SelectTrigger>
             <SelectContent position="popper">
                 <SelectItem value="classic">کلاسیک</SelectItem>

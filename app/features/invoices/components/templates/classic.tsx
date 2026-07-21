@@ -23,7 +23,7 @@ import { useProfile } from "@/features/profile/hooks/useProfile";
 
 import Instagram from "../../../shared/components/instagramIcon";
 export default function Classic({ invoice, user }: invoiceProps) {
-    const { data: profile } = useProfile();
+    const { data: profile } = useProfile({ enabled: !user });
     // Use passed user for public invoices, fallback to authenticated user profile
     const displayUser = user || profile;
     const colors = displayUser
