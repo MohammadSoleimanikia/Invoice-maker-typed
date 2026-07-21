@@ -105,14 +105,19 @@ function DemoInvoiceDatePicker({
                                     {formatPersianDisplayDate(selectedDate)}
                                 </Button>
                             </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
+                            <PopoverContent
+                                className="w-auto p-0"
+                                align="start"
+                            >
                                 <Calendar
                                     mode="single"
                                     selected={selectedDate}
                                     defaultMonth={selectedDate ?? new Date()}
                                     onSelect={(date) => {
                                         if (!date) return;
-                                        field.onChange(formatDateInputValue(date));
+                                        field.onChange(
+                                            formatDateInputValue(date),
+                                        );
                                         setOpen(false);
                                     }}
                                     className="rounded-lg border"
@@ -241,8 +246,7 @@ export default function DemoInvoiceForm() {
                     customer_name: data.customer_name.trim(),
                     customer_address: data.customer_address.trim(),
                     customer_email: data.customer_email.trim(),
-                    customer_phone_number:
-                        data.customer_phone_number.trim(),
+                    customer_phone_number: data.customer_phone_number.trim(),
                     descriptions: data.descriptions.trim(),
                     status: data.status,
                     payment_mode: data.payment_mode,
@@ -259,8 +263,7 @@ export default function DemoInvoiceForm() {
                     date_joined: now,
                     profile: {
                         store_name: data.seller_store_name.trim(),
-                        store_description:
-                            data.seller_store_description.trim(),
+                        store_description: data.seller_store_description.trim(),
                         store_address: data.seller_store_address.trim(),
                         insta_link: data.seller_insta_link.trim(),
                         hexcolor: data.seller_hexcolor || "#2a8e9e",
@@ -291,7 +294,8 @@ export default function DemoInvoiceForm() {
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-2">
                                 <Label htmlFor="seller_store_name">
-                                    نام فروشگاه <span className="text-red-500">*</span>
+                                    نام فروشگاه{" "}
+                                    <span className="text-red-500">*</span>
                                 </Label>
                                 <Input
                                     id="seller_store_name"
@@ -299,7 +303,8 @@ export default function DemoInvoiceForm() {
                                         required: "نام فروشگاه الزامی است",
                                         minLength: {
                                             value: 2,
-                                            message: "حداقل ۲ کاراکتر وارد کنید",
+                                            message:
+                                                "حداقل ۲ کاراکتر وارد کنید",
                                         },
                                     })}
                                 />
@@ -343,7 +348,9 @@ export default function DemoInvoiceForm() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="seller_hexcolor">رنگ برند</Label>
+                                <Label htmlFor="seller_hexcolor">
+                                    رنگ برند
+                                </Label>
                                 <div className="flex gap-2">
                                     <Input
                                         id="seller_hexcolor"
@@ -365,7 +372,9 @@ export default function DemoInvoiceForm() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="seller_logo">لوگوی فروشگاه</Label>
+                                <Label htmlFor="seller_logo">
+                                    لوگوی فروشگاه
+                                </Label>
                                 <div className="flex items-center gap-3">
                                     <Label
                                         htmlFor="seller_logo"
@@ -412,7 +421,8 @@ export default function DemoInvoiceForm() {
                     <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-3">
                         <div className="space-y-2">
                             <Label htmlFor="title">
-                                عنوان فاکتور <span className="text-red-500">*</span>
+                                عنوان فاکتور{" "}
+                                <span className="text-red-500">*</span>
                             </Label>
                             <Input
                                 id="title"
@@ -433,7 +443,8 @@ export default function DemoInvoiceForm() {
 
                         <div className="space-y-2">
                             <Label htmlFor="invoice_number">
-                                شماره فاکتور <span className="text-red-500">*</span>
+                                شماره فاکتور{" "}
+                                <span className="text-red-500">*</span>
                             </Label>
                             <Input
                                 id="invoice_number"
@@ -479,7 +490,9 @@ export default function DemoInvoiceForm() {
                                         <TableHead>نام کالا</TableHead>
                                         <TableHead>تعداد</TableHead>
                                         <TableHead>قیمت واحد (تومان)</TableHead>
-                                        <TableHead className="w-16">عملیات</TableHead>
+                                        <TableHead className="w-16">
+                                            عملیات
+                                        </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -510,16 +523,25 @@ export default function DemoInvoiceForm() {
                                             <TableCell className="min-w-28">
                                                 <Input
                                                     type="number"
-                                                    min={1}
+                                                    inputMode="decimal"
+                                                    step="0.001"
+                                                    min="0.001"
                                                     {...register(
                                                         `items.${index}.quantity`,
                                                         {
                                                             valueAsNumber: true,
+                                                            required:
+                                                                "مقدار الزامی است",
                                                             min: {
-                                                                value: 1,
+                                                                value: 0.001,
                                                                 message:
-                                                                    "حداقل ۱",
+                                                                    "مقدار باید بیشتر از صفر باشد",
                                                             },
+                                                            validate: (value) =>
+                                                                Number.isFinite(
+                                                                    value,
+                                                                ) ||
+                                                                "مقدار واردشده معتبر نیست",
                                                         },
                                                     )}
                                                 />
@@ -537,11 +559,15 @@ export default function DemoInvoiceForm() {
                                                     }}
                                                     render={({ field }) => (
                                                         <NumericFormat
-                                                            value={field.value || 0}
-                                                            thousandSeparator="," 
+                                                            value={
+                                                                field.value || 0
+                                                            }
+                                                            thousandSeparator=","
                                                             decimalSeparator="."
                                                             className="h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
-                                                            onValueChange={(values) =>
+                                                            onValueChange={(
+                                                                values,
+                                                            ) =>
                                                                 field.onChange(
                                                                     values.floatValue ||
                                                                         0,
@@ -556,8 +582,12 @@ export default function DemoInvoiceForm() {
                                                     type="button"
                                                     variant="ghost"
                                                     size="icon"
-                                                    disabled={fields.length === 1}
-                                                    onClick={() => remove(index)}
+                                                    disabled={
+                                                        fields.length === 1
+                                                    }
+                                                    onClick={() =>
+                                                        remove(index)
+                                                    }
                                                     aria-label="حذف کالا"
                                                 >
                                                     <Trash2 className="h-4 w-4 text-destructive" />
@@ -571,11 +601,16 @@ export default function DemoInvoiceForm() {
 
                         <div className="flex flex-wrap justify-end gap-5 rounded-lg bg-muted/40 p-4 text-sm">
                             <span>
-                                جمع کالاها: <strong>{subtotal.toLocaleString("fa-IR")}</strong>
+                                جمع کالاها:{" "}
+                                <strong>
+                                    {subtotal.toLocaleString("fa-IR")}
+                                </strong>
                             </span>
                             <span>
                                 مبلغ قابل پرداخت:{" "}
-                                <strong>{payableTotal.toLocaleString("fa-IR")}</strong>{" "}
+                                <strong>
+                                    {payableTotal.toLocaleString("fa-IR")}
+                                </strong>{" "}
                                 تومان
                             </span>
                         </div>

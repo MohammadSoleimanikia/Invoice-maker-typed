@@ -9,7 +9,6 @@ const InvoiceItemSchema = z.object({
 
     quantity: z
         .number()
-        .int()
         .min(1, "تعداد باید حداقل 1 باشد")
         .max(9223372036854776000, "تعداد بسیار زیاد است"),
 
