@@ -1,4 +1,5 @@
 import { CalendarIcon, Plus, Trash2, Upload } from "lucide-react";
+import moment from "moment-jalaali";
 import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 import {
@@ -69,11 +70,7 @@ function parseDateInputValue(value?: string | null) {
 function formatPersianDisplayDate(date?: Date) {
     if (!date) return "تاریخ را انتخاب کنید";
 
-    return date.toLocaleDateString("fa-IR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
+    return moment(date).format("jYYYY/jMM/jDD");
 }
 
 function DemoInvoiceDatePicker({
@@ -137,6 +134,7 @@ function DemoInvoiceDatePicker({
 }
 
 export default function DemoInvoiceForm() {
+    moment.locale("fa");
     const navigate = useNavigate();
     const [vatEnabled, setVatEnabled] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -209,6 +207,7 @@ export default function DemoInvoiceForm() {
     };
 
     const onSubmit = (data: DemoInvoiceFormType) => {
+        console.log("invoice", data);
         if (!isInvoiceFormValid(data.items)) {
             toast.error("حداقل یک کالای معتبر وارد کنید");
             return;
@@ -234,13 +233,20 @@ export default function DemoInvoiceForm() {
 
             const invoiceId = generateInvoiceId();
 
+            // تبدیل تاریخ انتخاب شده به شمسی با ساعت ثابت 00:00:00
+            const persianDateWithTime = moment(data.created)
+                .hour(0)
+                .minute(0)
+                .second(0)
+                .format("jYYYY-jMM-jDD HH:mm:ss");
+
             useInvoiceStore.getState().setPreviewData({
                 formData: data,
                 invoice: {
                     id: invoiceId,
                     invoice_number: data.invoice_number.trim(),
                     title: data.title.trim(),
-                    created: data.created,
+                    created: persianDateWithTime, // "1405-04-30 00:00:00"
                     updated: now,
                     public_token: invoiceId,
                     customer_name: data.customer_name.trim(),
@@ -506,7 +512,6 @@ export default function DemoInvoiceForm() {
                 <Card>
                     <CardHeader className="flex-row items-center justify-between">
                         <CardTitle>کالاهای فاکتور</CardTitle>
-                        
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="overflow-x-auto">
@@ -516,128 +521,148 @@ export default function DemoInvoiceForm() {
                                         <TableHead>نام کالا</TableHead>
                                         <TableHead>تعداد</TableHead>
                                         <TableHead>قیمت واحد (تومان)</TableHead>
+                                        <TableHead>مجموع (تومان)</TableHead>
                                         <TableHead className="w-16">
                                             عملیات
                                         </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {fields.map((field, index) => (
-                                        <TableRow key={field.id}>
-                                            <TableCell className="min-w-56">
-                                                <Input
-                                                    {...register(
-                                                        `items.${index}.product_name`,
-                                                        {
-                                                            required:
-                                                                "نام کالا الزامی است",
-                                                        },
-                                                    )}
-                                                    placeholder="نام کالا"
-                                                />
-                                                {errors.items?.[index]
-                                                    ?.product_name && (
-                                                    <p className="mt-1 text-xs text-red-500">
-                                                        {
-                                                            errors.items[index]
-                                                                ?.product_name
-                                                                ?.message
-                                                        }
-                                                    </p>
-                                                )}
-                                            </TableCell>
-                                            <TableCell className="min-w-28">
-                                                <Input
-                                                    type="number"
-                                                    inputMode="decimal"
-                                                    step="0.001"
-                                                    min="0.001"
-                                                    {...register(
-                                                        `items.${index}.quantity`,
-                                                        {
-                                                            valueAsNumber: true,
-                                                            required:
-                                                                "مقدار الزامی است",
-                                                            min: {
-                                                                value: 0.001,
-                                                                message:
-                                                                    "مقدار باید بیشتر از صفر باشد",
+                                    {fields.map((field, index) => {
+                                        const quantity =
+                                            watch(`items.${index}.quantity`) ||
+                                            0;
+                                        const price =
+                                            watch(`items.${index}.price`) || 0;
+                                        const rowTotal = quantity * price;
+
+                                        return (
+                                            <TableRow key={field.id}>
+                                                <TableCell className="min-w-56">
+                                                    <Input
+                                                        {...register(
+                                                            `items.${index}.product_name`,
+                                                            {
+                                                                required:
+                                                                    "نام کالا الزامی است",
                                                             },
-                                                            validate: (value) =>
-                                                                Number.isFinite(
+                                                        )}
+                                                        placeholder="نام کالا"
+                                                    />
+                                                    {errors.items?.[index]
+                                                        ?.product_name && (
+                                                        <p className="mt-1 text-xs text-red-500">
+                                                            {
+                                                                errors.items[
+                                                                    index
+                                                                ]?.product_name
+                                                                    ?.message
+                                                            }
+                                                        </p>
+                                                    )}
+                                                </TableCell>
+                                                <TableCell className="min-w-28">
+                                                    <Input
+                                                        type="number"
+                                                        inputMode="decimal"
+                                                        step="0.001"
+                                                        min="0.001"
+                                                        {...register(
+                                                            `items.${index}.quantity`,
+                                                            {
+                                                                valueAsNumber: true,
+                                                                required:
+                                                                    "مقدار الزامی است",
+                                                                min: {
+                                                                    value: 0.001,
+                                                                    message:
+                                                                        "مقدار باید بیشتر از صفر باشد",
+                                                                },
+                                                                validate: (
                                                                     value,
-                                                                ) ||
-                                                                "مقدار واردشده معتبر نیست",
-                                                        },
+                                                                ) =>
+                                                                    Number.isFinite(
+                                                                        value,
+                                                                    ) ||
+                                                                    "مقدار واردشده معتبر نیست",
+                                                            },
+                                                        )}
+                                                    />
+                                                </TableCell>
+                                                <TableCell className="min-w-44">
+                                                    <Controller
+                                                        control={control}
+                                                        name={`items.${index}.price`}
+                                                        rules={{
+                                                            min: {
+                                                                value: 0,
+                                                                message:
+                                                                    "قیمت منفی نیست",
+                                                            },
+                                                        }}
+                                                        render={({ field }) => (
+                                                            <NumericFormat
+                                                                value={
+                                                                    field.value ||
+                                                                    0
+                                                                }
+                                                                thousandSeparator=","
+                                                                decimalSeparator="."
+                                                                className="h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                                                                onValueChange={(
+                                                                    values,
+                                                                ) =>
+                                                                    field.onChange(
+                                                                        values.floatValue ||
+                                                                            0,
+                                                                    )
+                                                                }
+                                                            />
+                                                        )}
+                                                    />
+                                                </TableCell>
+                                                <TableCell className="min-w-44 font-medium">
+                                                    {rowTotal.toLocaleString(
+                                                        "fa-IR",
                                                     )}
-                                                />
-                                            </TableCell>
-                                            <TableCell className="min-w-44">
-                                                <Controller
-                                                    control={control}
-                                                    name={`items.${index}.price`}
-                                                    rules={{
-                                                        min: {
-                                                            value: 0,
-                                                            message:
-                                                                "قیمت منفی نیست",
-                                                        },
-                                                    }}
-                                                    render={({ field }) => (
-                                                        <NumericFormat
-                                                            value={
-                                                                field.value || 0
-                                                            }
-                                                            thousandSeparator=","
-                                                            decimalSeparator="."
-                                                            className="h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
-                                                            onValueChange={(
-                                                                values,
-                                                            ) =>
-                                                                field.onChange(
-                                                                    values.floatValue ||
-                                                                        0,
-                                                                )
-                                                            }
-                                                        />
-                                                    )}
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Button
-                                                    type="button"
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    disabled={
-                                                        fields.length === 1
-                                                    }
-                                                    onClick={() =>
-                                                        remove(index)
-                                                    }
-                                                    aria-label="حذف کالا"
-                                                >
-                                                    <Trash2 className="h-4 w-4 text-destructive" />
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Button
+                                                        type="button"
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        disabled={
+                                                            fields.length === 1
+                                                        }
+                                                        onClick={() =>
+                                                            remove(index)
+                                                        }
+                                                        aria-label="حذف کالا"
+                                                    >
+                                                        <Trash2 className="h-4 w-4 text-destructive" />
+                                                    </Button>
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
                                 </TableBody>
                             </Table>
                             <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() =>
-                                append({
-                                    product_name: "",
-                                    quantity: 1,
-                                    price: 0,
-                                })
-                            }
-                        >
-                            <Plus className="ml-1 h-4 w-4" />
-                            افزودن کالا
-                        </Button>
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                className="mt-4"
+                                onClick={() =>
+                                    append({
+                                        product_name: "",
+                                        quantity: 1,
+                                        price: 0,
+                                    })
+                                }
+                            >
+                                <Plus className="ml-1 h-4 w-4" />
+                                افزودن کالا
+                            </Button>
                         </div>
 
                         <div className="flex flex-wrap justify-end gap-5 rounded-lg bg-muted/40 p-4 text-sm">
@@ -646,13 +671,6 @@ export default function DemoInvoiceForm() {
                                 <strong>
                                     {subtotal.toLocaleString("fa-IR")}
                                 </strong>
-                            </span>
-                            <span>
-                                مبلغ قابل پرداخت:{" "}
-                                <strong>
-                                    {payableTotal.toLocaleString("fa-IR")}
-                                </strong>{" "}
-                                تومان
                             </span>
                         </div>
                     </CardContent>
@@ -675,9 +693,9 @@ export default function DemoInvoiceForm() {
                         <Textarea
                             {...register("descriptions", {
                                 maxLength: {
-                                    value: 500,
+                                    value: 60,
                                     message:
-                                        "توضیحات نباید بیشتر از ۵۰۰ کاراکتر باشد",
+                                        "توضیحات نباید بیشتر از 60 کاراکتر باشد",
                                 },
                             })}
                             placeholder="توضیحات اضافی، شرایط پرداخت یا شماره کارت"
@@ -703,14 +721,51 @@ export default function DemoInvoiceForm() {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>ارزش افزوده و تخفیف</CardTitle>
+                        <CardTitle>محاسبه مبلغ نهایی</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-4">
                         <VatAndDiscountSection
                             vatEnabled={vatEnabled}
                             onVatToggle={setVatEnabled}
                             addedValue={addedValue}
                         />
+
+                        {/* نمایش محاسبات */}
+                        <div className="mt-4 rounded-lg bg-muted/30 p-4 space-y-2">
+                            <div className="flex justify-between text-sm">
+                                <span>جمع کالاها:</span>
+                                <span className="font-medium">
+                                    {subtotal.toLocaleString("fa-IR")} تومان
+                                </span>
+                            </div>
+
+                            {vatEnabled && addedValue > 0 && (
+                                <div className="flex justify-between text-sm text-muted-foreground">
+                                    <span>ارزش افزوده (۱۰٪):</span>
+                                    <span className="font-medium">
+                                        + {addedValue.toLocaleString("fa-IR")}{" "}
+                                        تومان
+                                    </span>
+                                </div>
+                            )}
+
+                            {discount > 0 && (
+                                <div className="flex justify-between text-sm text-muted-foreground">
+                                    <span>تخفیف:</span>
+                                    <span className="font-medium text-destructive">
+                                        - {discount.toLocaleString("fa-IR")}{" "}
+                                        تومان
+                                    </span>
+                                </div>
+                            )}
+
+                            <div className="border-t pt-2 flex justify-between font-bold text-base">
+                                <span>مبلغ قابل پرداخت:</span>
+                                <span className="text-primary">
+                                    {payableTotal.toLocaleString("fa-IR")} تومان
+                                </span>
+                            </div>
+                        </div>
                     </CardContent>
                 </Card>
 
