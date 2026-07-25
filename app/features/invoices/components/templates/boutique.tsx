@@ -216,7 +216,7 @@ export default function Boutique({ invoice, user }: ReceiptProps) {
                                     </h2>
 
                                     {store?.store_description && (
-                                        <p className="mt-1 line-clamp-1 text-xs text-[var(--boutique-brand-text-soft)]">
+                                        <p className="mt-1 line-clamp-2 text-xs text-[var(--boutique-brand-text-soft)]">
                                             {store.store_description}
                                         </p>
                                     )}
@@ -237,7 +237,7 @@ export default function Boutique({ invoice, user }: ReceiptProps) {
                                 )}
 
                                 {store?.insta_link && (
-                                    <p className="line-clamp-1">
+                                    <p dir="ltr" className="line-clamp-1">
                                         {store.insta_link}
                                     </p>
                                 )}
@@ -284,7 +284,7 @@ export default function Boutique({ invoice, user }: ReceiptProps) {
                         <p className="mb-1 text-[10px] font-bold tracking-[0.18em] text-[var(--boutique-muted)]">
                             وضعیت
                         </p>
-                        <span className="inline-flex rounded-full bg-[var(--boutique-brand-soft)] px-3 py-1 text-[11px] font-bold text-[var(--boutique-brand-readable)]">
+                        <span className="inline-flex rounded-full  px-3 py-1 text-[11px] font-bold ">
                             {invoice.statusText}
                         </span>
                     </div>
@@ -482,7 +482,7 @@ export default function Boutique({ invoice, user }: ReceiptProps) {
                         {store?.insta_link && (
                             <span className="flex max-w-[150px] items-center gap-1 truncate">
                                 <Instagram className="h-4 w-4 shrink-0 text-current" />
-                                <span className="truncate">
+                                <span dir="ltr"  className="truncate ">
                                     {store.insta_link}
                                 </span>
                             </span>
