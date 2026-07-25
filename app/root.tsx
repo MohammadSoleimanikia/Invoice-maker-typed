@@ -24,7 +24,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <meta property="og:title" content="وب فاکتور" />
                 <meta
                     property="og:description"
-                    content="سامانه حرفه ای صدور فاکتور آنلاین"
+                    content="با وب فاکتور، فاکتور آنلاین حرفه‌ای بسازید و با لینک اختصاصی ارسال کنید؛ مشتریان، کالاها، موجودی FIFO و فروش را مدیریت کنید و از گزارش مالی، بارکدخوان، قالب‌های متنوع و برندینگ اختصاصی بهره ببرید.
+"
                 />
                 <meta property="og:image" content="/image-og.webp" />
                 <meta property="og:url" content="https://yourdomain.com" />
@@ -32,7 +33,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <meta name="twitter:title" content="وب فاکتور" />
                 <meta
                     name="twitter:description"
-                    content="سامانه حرفه ای صدور فاکتور آنلاین"
+                    content="با وب فاکتور، فاکتور آنلاین حرفه‌ای بسازید و با لینک اختصاصی ارسال کنید؛ مشتریان، کالاها، موجودی FIFO و فروش را مدیریت کنید و از گزارش مالی، بارکدخوان، قالب‌های متنوع و برندینگ اختصاصی بهره ببرید.
+"
                 />
                 <meta name="twitter:image" content="/image-og.webp" />
 
