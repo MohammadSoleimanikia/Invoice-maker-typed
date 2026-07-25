@@ -27,6 +27,7 @@ import { useCustomers } from "../hooks/useCustomers";
 import { useDeleteCustomer } from "../hooks/useDeleteCustomer";
 import CustomersSkeleton from "./customersSkeleton";
 import { CustomersTableEmptyState } from "./CustomersTableEmptyState";
+import UpdateCustomerModal from "./UpdateCustomerModal";
 
 interface CustomersTableProps {
     searchQuery?: string;
@@ -117,6 +118,7 @@ export default function CustomersTable({
                                         onConfirm={() => handleDelete(c.id)}
                                         title="مشتری"
                                     />
+                                    <UpdateCustomerModal customer={c} />
                                 </div>
                             </TableCell>
                         </TableRow>
