@@ -52,7 +52,7 @@ export function SalesWorkflow() {
                 <div className="relative mt-16">
                     <div className="absolute right-[16.5%] top-12 hidden h-px w-[67%] bg-gradient-to-l from-transparent via-primary/40 to-transparent lg:block" />
 
-                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-6 lg:auto-rows-fr lg:grid-cols-3">
                         {steps.map((step, index) => {
                             const Icon = step.icon;
 
@@ -75,7 +75,7 @@ export function SalesWorkflow() {
                                         duration: 0.5,
                                         delay: index * 0.12,
                                     }}
-                                    className="relative"
+                                    className="relative flex h-full flex-col"
                                 >
                                     <div className="relative z-10 mx-auto flex size-24 items-center justify-center rounded-full border bg-background shadow-lg">
                                         <div className="flex size-16 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -87,7 +87,7 @@ export function SalesWorkflow() {
                                         </span>
                                     </div>
 
-                                    <div className="mt-6 overflow-hidden rounded-3xl border bg-card p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+                                    <div className="mt-6 flex flex-1 flex-col overflow-hidden rounded-3xl border bg-card p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
                                         <h3 className="text-center text-xl font-bold">
                                             {step.title}
                                         </h3>
