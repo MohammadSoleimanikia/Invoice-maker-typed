@@ -10,7 +10,63 @@ import { TemplateShowcase } from "@/features/home/components/templateShowcase";
 import { PlansList } from "@/features/subscription/components/PlansList";
 
 const SITE_URL = "https://webfactor.ir";
-
+const STRUCTURED_DATA = {
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "Organization",
+            "@id": `${SITE_URL}/#organization`,
+            name: "وب فاکتور",
+            url: `${SITE_URL}/`,
+            logo: `${SITE_URL}/logo.svg`,
+            image: `${SITE_URL}/image-og.webp`,
+            sameAs: ["https://t.me/webfactor_ir", "https://ble.ir/webfactor"],
+            contactPoint: {
+                "@type": "ContactPoint",
+                telephone: "+98-938-705-1245",
+                contactType: "customer support",
+                availableLanguage: "Persian",
+            },
+        },
+        {
+            "@type": "WebSite",
+            "@id": `${SITE_URL}/#website`,
+            name: "وب فاکتور",
+            url: `${SITE_URL}/`,
+            inLanguage: "fa-IR",
+            publisher: {
+                "@id": `${SITE_URL}/#organization`,
+            },
+        },
+        {
+            "@type": "SoftwareApplication",
+            "@id": `${SITE_URL}/#software`,
+            name: "وب فاکتور",
+            url: `${SITE_URL}/`,
+            image: `${SITE_URL}/image-og.webp`,
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web",
+            inLanguage: "fa-IR",
+            description:
+                "سامانه آنلاین صدور و ارسال فاکتور، مدیریت مشتریان، کالاها، موجودی FIFO، خرید، فروش و گزارش‌های مالی با چهار قالب حرفه‌ای و برندینگ اختصاصی.",
+            provider: {
+                "@id": `${SITE_URL}/#organization`,
+            },
+            featureList: [
+                "ساخت و ارسال فاکتور آنلاین",
+                "چهار قالب حرفه‌ای فاکتور",
+                "درج لوگو و رنگ برند",
+                "مدیریت مشتریان",
+                "مدیریت کالا و دسته‌بندی",
+                "مدیریت موجودی FIFO",
+                "ثبت فاکتور خرید",
+                "گزارش‌های مالی و فروش",
+                "افزودن کالا با بارکدخوان",
+                "ارسال لینک عمومی فاکتور",
+            ],
+        },
+    ],
+};
 const TITLE = "ساخت فاکتور آنلاین رایگان و حرفه‌ای | وب فاکتور";
 
 const DESCRIPTION =
@@ -104,6 +160,15 @@ export function links() {
 export default function Home() {
     return (
         <main className="min-h-screen bg-white dark:bg-gray-950">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify(STRUCTURED_DATA).replace(
+                        /</g,
+                        "\\u003c",
+                    ),
+                }}
+            />
             <Header />
             <Hero />
             <Features />

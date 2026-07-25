@@ -27,8 +27,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     content="با وب فاکتور، فاکتور آنلاین حرفه‌ای بسازید و با لینک اختصاصی ارسال کنید؛ مشتریان، کالاها، موجودی FIFO و فروش را مدیریت کنید و از گزارش مالی، بارکدخوان، قالب‌های متنوع و برندینگ اختصاصی بهره ببرید.
 "
                 />
-                <meta property="og:image" content="/image-og.webp" />
-                <meta property="og:url" content="https://yourdomain.com" />
+                <meta
+                    property="og:image"
+                    content="https://webfactor.ir/image-og.webp"
+                />
+                <meta property="og:url" content="https://webfactor.ir/" />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:title" content="وب فاکتور" />
                 <meta

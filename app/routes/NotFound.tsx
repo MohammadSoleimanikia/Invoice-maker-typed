@@ -1,10 +1,21 @@
-import { ArrowRight, Home } from "lucide-react";
-import { useNavigate } from "react-router";
+import {  Link } from "react-router";
 
 import { Button } from "@/features/shared/components/ui/button";
 
+
+
+export function meta() {
+    return [
+        {
+            title: "صفحه پیدا نشد | وب فاکتور",
+        },
+        {
+            name: "robots",
+            content: "noindex, follow",
+        },
+    ];
+}
 export default function NotFound() {
-    const navigate = useNavigate();
 
     return (
         <div
@@ -48,21 +59,17 @@ export default function NotFound() {
                 </div>
 
                 {/* دکمه‌ها */}
-                <div className="flex items-center gap-3">
-                    <Button
-                        onClick={() => navigate(-1)}
-                        variant="outline"
-                        className="gap-2"
-                    >
-                        <ArrowRight className="w-4 h-4" />
-                        بازگشت
+                <div className="flex flex-wrap justify-center gap-3">
+                    <Button asChild>
+                        <Link to="/">بازگشت به صفحه اصلی</Link>
                     </Button>
-                    <Button
-                        onClick={() => navigate("/dashboard")}
-                        className="gap-2"
-                    >
-                        <Home className="w-4 h-4" />
-                        صفحه اصلی
+
+                    <Button asChild variant="outline">
+                        <Link to="/demo">ساخت رایگان فاکتور</Link>
+                    </Button>
+
+                    <Button asChild variant="ghost">
+                        <Link to="/login">ورود به حساب</Link>
                     </Button>
                 </div>
             </div>

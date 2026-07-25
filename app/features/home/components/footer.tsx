@@ -60,40 +60,53 @@ export function Footer() {
                         <h4 className="text-white font-semibold mb-4">
                             تماس با ما
                         </h4>
-                        
-                        <div className="space-y-2">
 
-                        <ul className="flex gap-1.5 items-center space-y-2 text-sm">
-                            <li ><a href="https://t.me/webfactor_ir" target="_blank">کانال تلگرام</a></li>
-                        </ul>
-                        <ul className="flex gap-1.5 items-center space-y-2 text-sm">
-                            <li ><a href="https://ble.ir/webfactor" target="_blank">کانال بله</a></li>
-                        </ul>
-                        <ul className="flex gap-1.5 items-center space-y-2 text-sm">
-                            فارس - شهرستان : مهر - بخش : گله دار - شهر : گله دار - محله : میدان امام - کوچه ((محمد قاسمی)) 
-                        </ul>
-                        <ul className="flex gap-1.5 items-center space-y-2 text-sm">
-                            <li>تلفن: 09387051245</li>
-                        </ul>
+                        <div className="space-y-2">
+                            <ul className="flex gap-1.5 items-center space-y-2 text-sm">
+                                <li>
+                                    <a
+                                        href="https://t.me/webfactor_ir"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        کانال تلگرام
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul className="flex gap-1.5 items-center space-y-2 text-sm">
+                                <li>
+                                    <a
+                                        href="https://ble.ir/webfactor"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        کانال بله
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul className="flex gap-1.5 items-center space-y-2 text-sm">
+                                فارس - شهرستان : مهر - بخش : گله دار - شهر : گله
+                                دار - محله : میدان امام - کوچه ((محمد قاسمی))
+                            </ul>
+                            <ul className="flex gap-1.5 items-center space-y-2 text-sm">
+                                <li>تلفن: 09387051245</li>
+                            </ul>
                         </div>
-                        
                     </div>
-                    
-                <a
-                    referrerPolicy="origin"
-                    target="_blank"
-                    href="https://trustseal.enamad.ir/?id=738212&Code=f59JgfLw0MEjq7k3k5J2g7GFncU5fg28"
-                >
-                    <img
+
+                    <a
                         referrerPolicy="origin"
-                        src="https://trustseal.enamad.ir/logo.aspx?id=738212&Code=f59JgfLw0MEjq7k3k5J2g7GFncU5fg28"
-                        alt="نماد اعتماد الکترونیکی"
-                        style={{ cursor: "pointer" }}
-                    />
-                </a>
-                
+                        target="_blank"
+                        href="https://trustseal.enamad.ir/?id=738212&Code=f59JgfLw0MEjq7k3k5J2g7GFncU5fg28"
+                    >
+                        <img
+                            referrerPolicy="origin"
+                            src="https://trustseal.enamad.ir/logo.aspx?id=738212&Code=f59JgfLw0MEjq7k3k5J2g7GFncU5fg28"
+                            alt="نماد اعتماد الکترونیکی"
+                            style={{ cursor: "pointer" }}
+                        />
+                    </a>
                 </div>
-                
             </div>
         </footer>
     );
