@@ -382,7 +382,7 @@ export function Features() {
                                 </div>
                             </div>
 
-                            <div className="shrink-0 rounded-2xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-medium backdrop-blur">
+                            <div className="shrink-0 rounded-2xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-medium ">
                                 سریع، دقیق و بدون ورود دستی
                             </div>
                         </div>
