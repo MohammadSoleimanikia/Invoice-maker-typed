@@ -506,21 +506,7 @@ export default function DemoInvoiceForm() {
                 <Card>
                     <CardHeader className="flex-row items-center justify-between">
                         <CardTitle>کالاهای فاکتور</CardTitle>
-                        <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() =>
-                                append({
-                                    product_name: "",
-                                    quantity: 1,
-                                    price: 0,
-                                })
-                            }
-                        >
-                            <Plus className="ml-1 h-4 w-4" />
-                            افزودن کالا
-                        </Button>
+                        
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="overflow-x-auto">
@@ -637,6 +623,21 @@ export default function DemoInvoiceForm() {
                                     ))}
                                 </TableBody>
                             </Table>
+                            <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                                append({
+                                    product_name: "",
+                                    quantity: 1,
+                                    price: 0,
+                                })
+                            }
+                        >
+                            <Plus className="ml-1 h-4 w-4" />
+                            افزودن کالا
+                        </Button>
                         </div>
 
                         <div className="flex flex-wrap justify-end gap-5 rounded-lg bg-muted/40 p-4 text-sm">
