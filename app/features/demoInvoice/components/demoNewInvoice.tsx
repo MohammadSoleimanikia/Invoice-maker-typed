@@ -341,8 +341,9 @@ export default function DemoInvoiceForm() {
                                     اینستاگرام
                                 </Label>
                                 <Input
+                                    className="text-left"
                                     id="seller_insta_link"
-                                    placeholder="@store"
+                                    placeholder="store_name"
                                     {...register("seller_insta_link")}
                                 />
                             </div>
@@ -391,11 +392,50 @@ export default function DemoInvoiceForm() {
                                         onChange={handleLogoChange}
                                     />
                                     {sellerLogo && (
-                                        <img
-                                            src={sellerLogo}
-                                            alt="پیش‌نمایش لوگو"
-                                            className="h-12 w-12 rounded border object-contain"
-                                        />
+                                        <div className="relative size-12">
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    setValue(
+                                                        "seller_logo",
+                                                        "",
+                                                        { shouldDirty: true },
+                                                    )
+                                                }
+                                                className="absolute -top-2 -right-2 z-10 flex size-5 items-center justify-center rounded-full bg-destructive text-white hover:bg-destructive/90"
+                                                aria-label="حذف لوگو"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="12"
+                                                    height="12"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                >
+                                                    <line
+                                                        x1="18"
+                                                        y1="6"
+                                                        x2="6"
+                                                        y2="18"
+                                                    />
+                                                    <line
+                                                        x1="6"
+                                                        y1="6"
+                                                        x2="18"
+                                                        y2="18"
+                                                    />
+                                                </svg>
+                                            </button>
+                                            <img
+                                                src={sellerLogo}
+                                                alt="پیش‌نمایش لوگو"
+                                                className="absolute top-0 left-0 rounded border object-contain size-full"
+                                            />
+                                        </div>
                                     )}
                                 </div>
                             </div>
