@@ -1,5 +1,7 @@
 // features/subscription/components/PlansList.tsx
 
+import { Link } from "react-router";
+
 import {
     Card,
     CardContent,
@@ -21,7 +23,7 @@ const PLANS: StaticPlan[] = [
         id: 1,
         name: "آزمایشی",
         price: 0,
-        durationText: "۱۵ روز",
+        durationText: "30 روز",
         isTrial: true,
     },
     {
@@ -56,7 +58,9 @@ export function PlansList() {
 
                         {plan.isTrial && (
                             <CardDescription className="text-primary">
-                                ✨ دوره آزمایشی رایگان
+                                <Link to={"/login"}>
+                                    ✨ دوره آزمایشی رایگان
+                                </Link>
                             </CardDescription>
                         )}
                     </CardHeader>
