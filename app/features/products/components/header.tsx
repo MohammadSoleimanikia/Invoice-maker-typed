@@ -1,6 +1,6 @@
 // features/products/components/header.tsx
 import { FolderTree, SearchIcon, XIcon } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router";
 
 import { Button } from "@/features/shared/components/ui/button";
@@ -24,12 +24,38 @@ export default function Header({
     setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 }) {
     const [searchInput, setSearchInput] = useState("");
+    const [isSearching, setIsSearching] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
     const { hasAccess } = useHasActiveSubscription();
 
-    const handleSearch = () => setSearchQuery(searchInput);
+    const handleSearch = () => {
+        if (searchInput.trim()) {
+            setSearchQuery(searchInput.trim());
+            setIsSearching(true);
+        }
+    };
+
     const handleReset = () => {
         setSearchInput("");
         setSearchQuery("");
+        setIsSearching(false);
+        inputRef.current?.focus();
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            handleSearch();
+        }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchInput(e.target.value);
+        // اگر قبلاً جستجو انجام شده و کاربر متن رو پاک میکنه، حالت جستجو رو غیرفعال کن
+        if (isSearching && e.target.value === "") {
+            setIsSearching(false);
+            setSearchQuery("");
+        }
     };
 
     return (
@@ -67,25 +93,38 @@ export default function Header({
             <div className="flex justify-between gap-3">
                 <InputGroup className="w-64 px-1">
                     <InputGroupInput
+                        ref={inputRef}
                         placeholder="جستجو بر اساس نام کالا"
                         value={searchInput}
-                        onChange={(e) => setSearchInput(e.target.value)}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
                         className="text-right"
                     />
 
                     <InputGroupButton
                         onClick={handleSearch}
-                        className="bg-primary text-primary-foreground"
+                        className="bg-primary text-primary-foreground hover:bg-primary/90"
+                        disabled={!searchInput.trim()}
                     >
                         <SearchIcon className="w-4 h-4" />
                     </InputGroupButton>
 
-                    {searchInput && (
-                        <InputGroupButton onClick={handleReset}>
+                    {isSearching && (
+                        <InputGroupButton
+                            onClick={handleReset}
+                            className="text-destructive hover:bg-destructive/10"
+                        >
                             <XIcon className="w-4 h-4" />
                         </InputGroupButton>
                     )}
                 </InputGroup>
+
+                {/* نمایش وضعیت جستجو */}
+                {isSearching && (
+                    <div className="flex items-center text-sm text-muted-foreground">
+                        <span>نتایج جستجو برای: "{searchInput}"</span>
+                    </div>
+                )}
             </div>
         </header>
     );
