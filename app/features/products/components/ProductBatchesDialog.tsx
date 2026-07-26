@@ -73,7 +73,7 @@ export default function ProductBatchesDialog({ product }: Props) {
                     <DialogTitle>موجودی خریدهای {product.name}</DialogTitle>
 
                     <DialogDescription>
-                        خریدهای دارای موجودی به ترتیب FIFO نمایش داده می‌شوند.
+                        خریدهای دارای موجودی به ترتیب تاریخ خرید نمایش داده می‌شوند.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -112,7 +112,7 @@ export default function ProductBatchesDialog({ product }: Props) {
                             <Table className="w-full min-w-[1000px]">
                                 <TableHeader className="sticky top-0 bg-muted">
                                     <TableRow>
-                                        <TableHead>اولویت FIFO</TableHead>
+                                        <TableHead>اولویت در صف</TableHead>
                                         <TableHead>شماره فاکتور</TableHead>
                                         <TableHead>تعداد خرید</TableHead>
                                         <TableHead>باقی‌مانده</TableHead>
