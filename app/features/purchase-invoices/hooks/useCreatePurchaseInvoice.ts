@@ -24,12 +24,10 @@ export function useCreatePurchaseInvoice() {
                 queryKey: ["purchase-invoices"],
             });
 
-            // بروزرسانی لیست و موجودی محصولات
             queryClient.invalidateQueries({
                 queryKey: ["products"],
             });
 
-            // بروزرسانی batchهای FIFO
             queryClient.invalidateQueries({
                 queryKey: ["product-batches"],
             });
