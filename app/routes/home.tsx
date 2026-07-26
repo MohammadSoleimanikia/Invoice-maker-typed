@@ -5,6 +5,7 @@ import { Features } from "@/features/home/components/features";
 import { Footer } from "@/features/home/components/footer";
 import { Header } from "@/features/home/components/header";
 import { Hero } from "@/features/home/components/hero";
+import { HomeFaq } from "@/features/home/components/homeFaq";
 import { SalesWorkflow } from "@/features/home/components/salesWorkflow";
 import { TemplateShowcase } from "@/features/home/components/templateShowcase";
 import { PlansList } from "@/features/subscription/components/PlansList";
@@ -188,15 +189,9 @@ export default function Home() {
                     </div>
 
                     <PlansList />
-
-                    <div className="mt-8 text-center">
-                        <p className="text-sm text-muted-foreground">
-                            برای اطلاعات بیشتر با ما تماس بگیرید.
-                        </p>
-                    </div>
                 </div>
             </section>
-
+<HomeFaq />
             <SalesWorkflow />
             <CTA />
             <Footer />
