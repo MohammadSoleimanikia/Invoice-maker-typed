@@ -133,6 +133,7 @@ export default function AddProductModal({
                             control={control}
                             render={({ field }) => (
                                 <Select
+                                    dir="rtl"
                                     value={field.value?.toString() || "none"} 
                                     onValueChange={(value) =>
                                         field.onChange(
@@ -146,7 +147,7 @@ export default function AddProductModal({
                                         <SelectValue placeholder="انتخاب دسته‌بندی..." />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="none">
+                                        <SelectItem  value="none">
                                             بدون دسته‌بندی
                                         </SelectItem>{" "}
                                         {/* ✅ به جای "" از "none" */}
