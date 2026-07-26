@@ -153,7 +153,13 @@ export function Features() {
                         </h3>
 
                         <p className="mt-2 leading-7 text-muted-foreground">
-                            موجودی کالاها و خریدها را دقیق و به‌ترتیب FIFO
+                            موجودی کالاها و خریدها را دقیق و به‌ترتیب{" "}
+                            <a
+                                href="#faq-fifo-inventory-pricing"
+                                className="font-semibold text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary"
+                            >
+                                FIFO
+                            </a>{" "}
                             مدیریت کنید.
                         </p>
 
