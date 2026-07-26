@@ -31,7 +31,7 @@ export function useProducts({
     params.append("page_size", pageSize.toString());
 
     if (search && search.trim()) {
-        params.append("search", search.trim());
+        params.append("name", search.trim());
     }
 
     const { data, isLoading, error, refetch, isFetching, isError } = useQuery({
